@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export const metadata: Metadata = {
   title: 'Francisco Catalán — Full-Stack Developer',
   description:
@@ -12,14 +14,14 @@ export const metadata: Metadata = {
       'Software con criterio técnico, impacto operativo y una mirada end-to-end.',
     type: 'website',
     locale: 'es_ES',
-    images: ['/og.png'],
+    images: [`${basePath}/og.png`],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Francisco Catalán — Full-Stack Developer',
     description:
       'Software con criterio técnico, impacto operativo y una mirada end-to-end.',
-    images: ['/og.png'],
+    images: [`${basePath}/og.png`],
   },
 };
 

@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react';
 import { ArrowDown, ArrowUpRight, MoveUpRight } from 'lucide-react';
 import { caseStudies, experience, marqueeWords, navItems, services, skills } from '../content';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return <div className={`reveal ${className}`}>{children}</div>;
 }
@@ -38,12 +40,12 @@ export default function PortfolioPage() {
           <p className="eyebrow"><span className="eyebrow-dot" /> Disponible para nuevas oportunidades</p>
           <h1>Full-Stack <span>Developer</span></h1>
           <p className="hero-intro">Diseño y desarrollo productos digitales que convierten procesos complejos en experiencias claras, escalables y útiles para el negocio.</p>
-          <div className="hero-actions"><a className="button button-dark" href="/CV_Francisco_Catalan_FullStack.pdf" download>Descargar CV <ArrowDown size={15} aria-hidden="true" /></a><a className="button button-quiet" href="#contacto">Hablemos <ArrowUpRight size={15} aria-hidden="true" /></a></div>
+          <div className="hero-actions"><a className="button button-dark" href={`${basePath}/CV_Francisco_Catalan_FullStack.pdf`} download>Descargar CV <ArrowDown size={15} aria-hidden="true" /></a><a className="button button-quiet" href="#contacto">Hablemos <ArrowUpRight size={15} aria-hidden="true" /></a></div>
           <div className="hero-meta"><span>Madrid, España</span><span className="meta-divider" aria-hidden="true" /><span>+5 años de experiencia</span></div>
         </Reveal>
         <Reveal className="hero-visual">
           <div className="hero-orbit orbit-one" aria-hidden="true" /><div className="hero-orbit orbit-two" aria-hidden="true" /><div className="hero-orbit orbit-three" aria-hidden="true" />
-          <div className="portrait-frame"><img src="/francisco-avatar.png" alt="Retrato editorial de Francisco Catalán" /><span className="portrait-glow" aria-hidden="true" /></div>
+          <div className="portrait-frame"><img src={`${basePath}/francisco-avatar.png`} alt="Retrato editorial de Francisco Catalán" /><span className="portrait-glow" aria-hidden="true" /></div>
           <div className="portrait-caption"><span>01 / 04</span><span>Construir con propósito</span></div>
           <div className="floating-note note-top"><span className="note-label">Focus</span><strong>End-to-end</strong></div><div className="floating-note note-bottom"><span className="note-label">Now learning</span><strong>Big Data &amp; Analytics</strong></div>
         </Reveal>
@@ -63,7 +65,7 @@ export default function PortfolioPage() {
 
       <section className="toolkit section-wrap"><Reveal><div className="section-kicker">/ 04 — Toolkit</div></Reveal><div className="toolkit-grid"><Reveal><h2>Las herramientas son el medio. El criterio, la diferencia.</h2></Reveal><Reveal className="skills-cloud">{skills.map((skill) => <span key={skill}>{skill}</span>)}</Reveal></div></section>
 
-      <section id="contacto" className="contact-section section-wrap"><Reveal className="contact-card"><div className="contact-copy"><div className="section-kicker">/ 05 — Contacto</div><h2>¿Tienes un reto interesante?</h2><p>Estoy disponible para conversar sobre oportunidades Full-Stack en España y proyectos donde el software tenga que hacer algo más que funcionar.</p></div><div className="contact-actions"><a className="contact-email" href="mailto:catalan.sistemas@gmail.com">catalan.sistemas@gmail.com <ArrowUpRight size={19} aria-hidden="true" /></a><div className="contact-links"><a href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="/CV_Francisco_Catalan_FullStack.pdf" download>Descargar CV ↓</a></div></div></Reveal></section>
+      <section id="contacto" className="contact-section section-wrap"><Reveal className="contact-card"><div className="contact-copy"><div className="section-kicker">/ 05 — Contacto</div><h2>¿Tienes un reto interesante?</h2><p>Estoy disponible para conversar sobre oportunidades Full-Stack en España y proyectos donde el software tenga que hacer algo más que funcionar.</p></div><div className="contact-actions"><a className="contact-email" href="mailto:catalan.sistemas@gmail.com">catalan.sistemas@gmail.com <ArrowUpRight size={19} aria-hidden="true" /></a><div className="contact-links"><a href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href={`${basePath}/CV_Francisco_Catalan_FullStack.pdf`} download>Descargar CV ↓</a></div></div></Reveal></section>
       <footer className="site-footer section-wrap"><span>© {new Date().getFullYear()} Francisco Catalán</span><span>Full-Stack Developer · Madrid</span><a href="#top"><MoveUpRight size={13} aria-hidden="true" /> Volver arriba</a></footer>
     </main>
   );
