@@ -31,6 +31,11 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /francisco-catalan-portfolio
+      - name: Normalize Pages artifact paths
+        run: |
+          mkdir -p dist/client/_next
+          cp -R dist/client/francisco-catalan-portfolio/_next/. dist/client/_next/
+          rm -rf dist/client/francisco-catalan-portfolio
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
