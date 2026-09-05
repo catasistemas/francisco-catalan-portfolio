@@ -71,8 +71,8 @@ export default function PortfolioPage() {
         </nav>
         <div className="header-actions">
           <div className="language-switcher" aria-label={t.languageLabel}>
-            <button className={language === 'es' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('es')} aria-label="Español" aria-pressed={language === 'es'}><span>🇪🇸</span></button>
-            <button className={language === 'en' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('en')} aria-label="English (United States)" aria-pressed={language === 'en'}><span>🇺🇸</span></button>
+            <button className={language === 'es' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('es')} aria-label="Español" aria-pressed={language === 'es'}><span className="flag flag-spain" aria-hidden="true" /></button>
+            <button className={language === 'en' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('en')} aria-label="English (United States)" aria-pressed={language === 'en'}><span className="flag flag-united-states" aria-hidden="true" /></button>
           </div>
           <a className="header-link" href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" /></a>
         </div>
