@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://francisco-catalan.ivory-mole-5328.chatgpt.site'),
   title: 'Francisco Catalán — Full-Stack Developer',
   description:
     'Portfolio profesional de Francisco Catalán, Full-Stack Developer especializado en plataformas corporativas, automatización, cloud e inteligencia artificial.',
