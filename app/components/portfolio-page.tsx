@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
-import { copy, Language, skills } from '../content';
+import { copy, Language } from '../content';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return <div className={`reveal ${className}`}>{children}</div>;
 }
+
+const toolPositions = [[10, 14], [34, 7], [60, 12], [84, 15], [3, 40], [27, 32], [52, 39], [75, 31], [94, 43], [12, 67], [39, 61], [64, 68], [88, 63], [28, 86], [58, 88]];
 
 export default function PortfolioPage() {
   const shellRef = useRef<HTMLElement>(null);
@@ -69,8 +71,8 @@ export default function PortfolioPage() {
         </nav>
         <div className="header-actions">
           <div className="language-switcher" aria-label={t.languageLabel}>
-            <button className={language === 'es' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('es')} aria-label="Español" aria-pressed={language === 'es'}><span>🇪🇸</span><small>ES</small></button>
-            <button className={language === 'en' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('en')} aria-label="English" aria-pressed={language === 'en'}><span>🇬🇧</span><small>EN</small></button>
+            <button className={language === 'es' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('es')} aria-label="Español" aria-pressed={language === 'es'}><span>🇪🇸</span></button>
+            <button className={language === 'en' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('en')} aria-label="English (United States)" aria-pressed={language === 'en'}><span>🇺🇸</span></button>
           </div>
           <a className="header-link" href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" /></a>
         </div>
@@ -106,7 +108,7 @@ export default function PortfolioPage() {
 
       <section id="trayectoria" className="trajectory section-wrap"><Reveal><div className="section-kicker">{t.journeyKicker}</div></Reveal><div className="trajectory-grid"><Reveal><h2>{t.journeyTitle}<span className="accent-dot">·</span><p className="trajectory-aside">{t.journeyAside}</p></h2></Reveal><div className="timeline">{t.experience.map((item) => <Reveal className="timeline-item" key={item.company}><div className="timeline-date">{item.date}</div><div className="timeline-content"><h3>{item.company}</h3><p className="timeline-role">{item.role}</p><p>{item.copy}</p><span className="timeline-location">{item.location}</span></div></Reveal>)}</div></div></section>
 
-      <section className="toolkit section-wrap"><Reveal><div className="section-kicker">{t.toolkitKicker}</div></Reveal><div className="toolkit-grid"><Reveal><h2>{t.toolkitTitle}</h2></Reveal><Reveal className="skills-cloud">{skills.map((skill) => <span key={skill}>{skill}</span>)}</Reveal></div></section>
+      <section className="toolkit section-wrap"><Reveal><div className="section-kicker">{t.toolkitKicker}</div></Reveal><div className="toolkit-grid"><Reveal><h2>{t.toolkitTitle}</h2></Reveal><Reveal className="toolkit-constellation-wrap"><div className="toolkit-constellation" onPointerMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); event.currentTarget.style.setProperty('--field-x', `${((event.clientX - rect.left) / rect.width) * 100}%`); event.currentTarget.style.setProperty('--field-y', `${((event.clientY - rect.top) / rect.height) * 100}%`); }} onPointerLeave={(event) => { event.currentTarget.style.setProperty('--field-x', '50%'); event.currentTarget.style.setProperty('--field-y', '50%'); }} role="list" aria-label={t.toolkitTitle}><div className="constellation-trace trace-one" aria-hidden="true" /><div className="constellation-trace trace-two" aria-hidden="true" /><div className="constellation-trace trace-three" aria-hidden="true" /><div className="constellation-core" aria-hidden="true"><span>FC</span><small>{t.toolkitHint}</small></div>{t.toolkitTools.map((tool, index) => { const [x, y] = toolPositions[index] ?? [50, 50]; return <div className="tool-node" key={tool.name} role="listitem" style={{ '--tool-x': `${x}%`, '--tool-y': `${y}%`, '--tool-delay': `${index * -0.35}s` } as React.CSSProperties}><span className="tool-icon" aria-hidden="true">{tool.icon}</span><span className="tool-name">{tool.name}</span><span className="tool-category">{tool.category}</span></div>; })}</div></Reveal></div></section>
 
       <section id="contacto" className="contact-section section-wrap"><Reveal className="contact-card"><div className="contact-copy"><div className="section-kicker">{t.contactKicker}</div><h2>{t.contactTitle}</h2><p>{t.contactCopy}</p></div><div className="contact-actions"><a className="contact-email" href="mailto:catalan.sistemas@gmail.com">catalan.sistemas@gmail.com <ArrowUpRight size={19} aria-hidden="true" /></a><div className="contact-links"><a href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} ↗</a><a href={`${basePath}/CV_Francisco_Catalan_FullStack.pdf`} download>{t.cvShort}</a></div></div></Reveal></section>
       <footer className="site-footer section-wrap"><span>© {new Date().getFullYear()} Francisco Catalán</span><span>{t.footerRole}</span><a href="#top"><MoveUpRight size={13} aria-hidden="true" /> {t.backTop}</a></footer>

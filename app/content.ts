@@ -1,5 +1,7 @@
 export type Language = 'es' | 'en';
 
+export type Tool = { name: string; icon: string; category: string };
+
 export type SiteCopy = {
   nav: { profile: string; cases: string; journey: string; contact: string };
   languageLabel: string;
@@ -28,9 +30,11 @@ export type SiteCopy = {
   journeyKicker: string;
   journeyTitle: string;
   journeyAside: string;
-  experience: { date: string; company: string; role: string; location: string; copy: string }[];
+  experience: { date: string; company: string; role: string; location: string; copy: string; current?: boolean }[];
   toolkitKicker: string;
   toolkitTitle: string;
+  toolkitHint: string;
+  toolkitTools: Tool[];
   contactKicker: string;
   contactTitle: string;
   contactCopy: string;
@@ -45,7 +49,7 @@ export const copy: Record<Language, SiteCopy> = {
     languageLabel: 'Idioma', linkedin: 'LinkedIn', available: 'Disponible para nuevas oportunidades',
     heroIntro: 'Diseño y desarrollo productos digitales que convierten procesos complejos en experiencias claras, escalables y útiles para el negocio.',
     downloadCv: 'Descargar CV', talk: 'Hablemos', location: 'Madrid, España', experienceMeta: '+5 años de experiencia',
-    focus: 'Focus', learning: 'Now learning', portraitCaption: 'Construir con propósito',
+    focus: 'Focus', learning: 'Actualmente aprendiendo', portraitCaption: 'Construir con propósito',
     marquee: ['Full-Stack', 'Automatización', 'Cloud', 'IA aplicada', 'Software útil'],
     profileKicker: '/ 01 — Perfil', profileTitle: 'La tecnología funciona mejor cuando entiende a las personas.',
     profileParagraphs: ['Soy ingeniero en sistemas y desarrollador Full-Stack. Me muevo entre frontend, backend y negocio para convertir necesidades reales en software que se puede mantener, medir y hacer crecer.', 'Actualmente trabajo en soluciones con inteligencia artificial mientras curso un Máster en Big Data & Business Analytics. Mi forma de aportar combina criterio técnico, comunicación directa y obsesión por quitar fricción.'],
@@ -65,11 +69,14 @@ export const copy: Record<Language, SiteCopy> = {
     statsLabel: 'En números', stats: [{ value: '5+', line1: 'años construyendo', line2: 'software' }, { value: '3+', line1: 'plataformas', line2: 'corporativas' }, { value: '2,2 M', line1: 'clientes potenciales', line2: 'en producto digital' }, { value: '3 min', line1: 'procesos reducidos', line2: 'de horas a minutos' }],
     journeyKicker: '/ 03 — Trayectoria', journeyTitle: 'Una carrera entre sistemas críticos y nuevas posibilidades.', journeyAside: 'De AS/400 a soluciones con IA: la curiosidad técnica solo importa cuando produce resultados.',
     experience: [
-      { date: '07.2026 — actualidad', company: 'Carmon Inversores', role: 'Ingeniero de Inteligencia Artificial / Desarrollador Full-Stack', location: 'Madrid, España', copy: 'Construyo productos internos de RR. HH., automatizaciones y soluciones conectadas a documentación y visión 360º.' },
+      { date: '07.2026 — actualidad', company: 'Carmon Inversores', role: 'Ingeniero de Inteligencia Artificial / Desarrollador Full-Stack', location: 'Madrid, España', copy: 'Construyo productos internos de RR. HH., automatizaciones y soluciones conectadas a documentación y visión 360º.', current: true },
       { date: '06.2022 — 05.2026', company: "Fashion's Park S.A.", role: 'Líder Técnico de Desarrollo TI / Full-Stack Developer', location: 'Santiago, Chile', copy: 'Lideré durante cuatro años el desarrollo de más de tres plataformas corporativas críticas para crédito, cobranzas y gestión documental.' },
       { date: '08.2021 — 12.2021', company: 'Consorcio Credicard C.A.', role: 'Desarrollador de TI', location: 'Caracas, Venezuela', copy: 'Mantuve y mejoré programas internos sobre AS/400, conectando necesidades del negocio con mejoras técnicas concretas.' },
+      { date: '11.2019 — 01.2021', company: 'CANTV', role: 'Desarrollador de Software', location: 'Venezuela', copy: 'Participé en sistemas de información para operaciones y en una base de datos MySQL para actualizar información de centrales. También desarrollé interfaces web con JavaScript, Bootstrap y Tailwind CSS.' },
     ],
-    toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Las herramientas son el medio. El criterio, la diferencia.', contactKicker: '/ 05 — Contacto', contactTitle: '¿Tienes un reto interesante?', contactCopy: 'Estoy disponible para conversar sobre oportunidades Full-Stack en España y proyectos donde el software tenga que hacer algo más que funcionar.', cvShort: 'Descargar CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Volver arriba',
+    toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Las herramientas son el medio. El criterio, la diferencia.', toolkitHint: 'Explora el stack · mueve el cursor', toolkitTools: [
+      { name: 'Angular', icon: '△', category: 'Frontend' }, { name: 'TypeScript', icon: 'TS', category: 'Frontend' }, { name: 'JavaScript', icon: 'JS', category: 'Frontend' }, { name: 'Python', icon: 'Py', category: 'Backend' }, { name: 'FastAPI', icon: '⚡', category: 'Backend' }, { name: 'Flask', icon: 'ϟ', category: 'Backend' }, { name: 'Node.js', icon: '◈', category: 'Backend' }, { name: 'PostgreSQL', icon: 'PG', category: 'Data' }, { name: 'SQL Server', icon: 'SQL', category: 'Data' }, { name: 'Azure', icon: '☁', category: 'Cloud' }, { name: 'Supabase', icon: '✦', category: 'Data' }, { name: 'Docker', icon: '◇', category: 'Cloud' }, { name: 'REST APIs', icon: '↗', category: 'Architecture' }, { name: 'Microsoft Graph', icon: '⌘', category: 'Cloud' }, { name: 'CI/CD', icon: '⟳', category: 'Delivery' },
+    ], contactKicker: '/ 05 — Contacto', contactTitle: '¿Tienes un reto interesante?', contactCopy: 'Estoy disponible para conversar sobre oportunidades Full-Stack en España y proyectos donde el software tenga que hacer algo más que funcionar.', cvShort: 'Descargar CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Volver arriba',
   },
   en: {
     nav: { profile: 'Profile', cases: 'Cases', journey: 'Journey', contact: 'Contact' },
@@ -96,12 +103,13 @@ export const copy: Record<Language, SiteCopy> = {
     statsLabel: 'By the numbers', stats: [{ value: '5+', line1: 'years building', line2: 'software' }, { value: '3+', line1: 'corporate', line2: 'platforms' }, { value: '2.2M', line1: 'potential', line2: 'customers' }, { value: '3 min', line1: 'processes reduced', line2: 'from hours to minutes' }],
     journeyKicker: '/ 03 — Journey', journeyTitle: 'A career across critical systems and new possibilities.', journeyAside: 'From AS/400 to AI solutions: technical curiosity only matters when it creates visible results.',
     experience: [
-      { date: '07.2026 — present', company: 'Carmon Inversores', role: 'AI Engineer / Full-Stack Developer', location: 'Madrid, Spain', copy: 'Building internal HR products, automations and solutions connected to documentation and 360º business visibility.' },
+      { date: '07.2026 — present', company: 'Carmon Inversores', role: 'AI Engineer / Full-Stack Developer', location: 'Madrid, Spain', copy: 'Building internal HR products, automations and solutions connected to documentation and 360º business visibility.', current: true },
       { date: '06.2022 — 05.2026', company: "Fashion's Park S.A.", role: 'Technical Development Lead / Full-Stack Developer', location: 'Santiago, Chile', copy: 'Led the development of more than three critical corporate platforms for credit, collections and document management over four years.' },
       { date: '08.2021 — 12.2021', company: 'Consorcio Credicard C.A.', role: 'IT Developer', location: 'Caracas, Venezuela', copy: 'Maintained and improved internal AS/400 programs, connecting business needs with concrete technical improvements.' },
+      { date: '11.2019 — 01.2021', company: 'CANTV', role: 'Software Developer', location: 'Venezuela', copy: 'Contributed to operational information systems and a MySQL database for updating central-office data. Also developed web interfaces with JavaScript, Bootstrap and Tailwind CSS.' },
     ],
-    toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Tools are the medium. Judgment is the difference.', contactKicker: '/ 05 — Contact', contactTitle: 'Have an interesting challenge?', contactCopy: 'I am open to Full-Stack opportunities in Spain and projects where software has to do more than simply work.', cvShort: 'Download CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Back to top',
+    toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Tools are the medium. Judgment is the difference.', toolkitHint: 'Explore the stack · move your cursor', toolkitTools: [
+      { name: 'Angular', icon: '△', category: 'Frontend' }, { name: 'TypeScript', icon: 'TS', category: 'Frontend' }, { name: 'JavaScript', icon: 'JS', category: 'Frontend' }, { name: 'Python', icon: 'Py', category: 'Backend' }, { name: 'FastAPI', icon: '⚡', category: 'Backend' }, { name: 'Flask', icon: 'ϟ', category: 'Backend' }, { name: 'Node.js', icon: '◈', category: 'Backend' }, { name: 'PostgreSQL', icon: 'PG', category: 'Data' }, { name: 'SQL Server', icon: 'SQL', category: 'Data' }, { name: 'Azure', icon: '☁', category: 'Cloud' }, { name: 'Supabase', icon: '✦', category: 'Data' }, { name: 'Docker', icon: '◇', category: 'Cloud' }, { name: 'REST APIs', icon: '↗', category: 'Architecture' }, { name: 'Microsoft Graph', icon: '⌘', category: 'Cloud' }, { name: 'CI/CD', icon: '⟳', category: 'Delivery' },
+    ], contactKicker: '/ 05 — Contact', contactTitle: 'Have an interesting challenge?', contactCopy: 'I am open to Full-Stack opportunities in Spain and projects where software has to do more than simply work.', cvShort: 'Download CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Back to top',
   },
 };
-
-export const skills = ['Angular', 'TypeScript', 'JavaScript', 'Python', 'FastAPI', 'Flask', 'Node.js', 'PostgreSQL', 'SQL Server', 'Azure', 'Supabase', 'Docker', 'REST APIs', 'Microsoft Graph', 'CI/CD'];
