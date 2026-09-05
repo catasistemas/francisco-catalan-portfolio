@@ -163,3 +163,32 @@ h1 span { display: block; margin-left: 12%; color: var(--violet); font-style: it
 @keyframes traceFlow { 0%, 100% { opacity: .5; transform: translate(-50%, -50%) rotate(-18deg) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) rotate(-11deg) scale(1.025); } }
 @media (max-width: 640px) { .toolkit-constellation { min-height: 545px; }.tool-node { min-width: 54px; }.tool-icon { width: 34px; height: 34px; font-size: 11px; }.tool-name { max-width: 72px; font-size: 8px; }.tool-category { display: none; }.constellation-core { width: 76px; height: 76px; }.constellation-core span { font-size: 20px; }.constellation-core small { top: calc(100% + 10px); font-size: 7px; } }
 @media (prefers-reduced-motion: reduce) { .toolkit-constellation::before, .constellation-core, .constellation-trace, .tool-node { animation: none; }.tool-node { transform: translate(-50%, -50%); }.toolkit-constellation:has(.tool-node:hover) .tool-node:not(:hover) { filter: none; } }
+
+/* Physics-driven toolkit with recognizable technology marks. */
+.toolkit-grid { grid-template-columns: .72fr 1.28fr; gap: 48px; }
+.physics-constellation { min-height: 590px; cursor: crosshair; background: radial-gradient(circle at var(--field-x, 50%) var(--field-y, 50%), rgba(155,124,255,.22), transparent 16%), radial-gradient(circle at 50% 50%, rgba(215,250,88,.07), transparent 35%), #0b0d10; }
+.physics-constellation::before { opacity: .2; background-size: 42px 42px; animation-duration: 28s; }
+.physics-constellation::after { background: radial-gradient(circle at var(--field-x, 50%) var(--field-y, 50%), rgba(255,255,255,.25), transparent 2%, rgba(155,124,255,.12) 7%, transparent 17%); }
+.constellation-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.physics-core { z-index: 2; width: 88px; height: 88px; border-color: rgba(215,250,88,.68); background: rgba(7,9,12,.74); box-shadow: 0 0 0 12px rgba(215,250,88,.018), 0 0 54px rgba(155,124,255,.28); backdrop-filter: blur(8px); }
+.physics-core::before, .physics-core::after { content: ''; position: absolute; inset: -19px; border: 1px solid transparent; border-top-color: rgba(155,124,255,.75); border-right-color: rgba(215,250,88,.28); border-radius: 50%; animation: energyOrbit 7s linear infinite; }
+.physics-core::after { inset: -35px; border-top-color: rgba(215,250,88,.42); border-right-color: transparent; border-bottom-color: rgba(155,124,255,.28); animation-duration: 12s; animation-direction: reverse; }
+.physics-node { top: 0; left: 0; width: 102px; min-width: 102px; gap: 0; animation: none; will-change: transform; }
+.tool-node-inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; transition: filter .28s ease, transform .38s cubic-bezier(.16,.8,.2,1); }
+.physics-node .tool-logo { position: relative; display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid color-mix(in srgb, var(--tool-color) 56%, transparent); border-radius: 50%; color: var(--tool-color); background: color-mix(in srgb, var(--tool-color) 7%, rgba(7,9,12,.92)); box-shadow: inset 0 0 18px color-mix(in srgb, var(--tool-color) 8%, transparent), 0 0 18px color-mix(in srgb, var(--tool-color) 14%, transparent); transition: color .3s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease, transform .45s cubic-bezier(.16,.8,.2,1); }
+.physics-node .tool-logo::before, .physics-node .tool-logo::after { content: ''; position: absolute; inset: -7px; border: 1px solid transparent; border-top-color: var(--tool-color); border-radius: 50%; opacity: 0; transition: opacity .3s ease; }
+.physics-node .tool-logo::after { inset: -12px; border-top-color: transparent; border-right-color: var(--tool-color); }
+.physics-node .tool-logo svg { width: 27px; height: 27px; fill: currentColor; }
+.physics-node .tool-name { max-width: 102px; color: #f4f1eb; font-size: 10px; font-weight: 650; text-shadow: 0 2px 7px #000; }
+.physics-node .tool-category { color: #85827c; font-size: 7px; }
+.physics-node:hover, .physics-node:focus-visible { outline: none; filter: none; }
+.physics-node:hover .tool-node-inner, .physics-node:focus-visible .tool-node-inner { z-index: 6; filter: brightness(1.18); transform: scale(1.24) translateY(-4px); }
+.physics-node:hover .tool-logo, .physics-node:focus-visible .tool-logo { color: #07100b; border-color: var(--tool-color); background: var(--tool-color); box-shadow: 0 0 0 6px color-mix(in srgb, var(--tool-color) 10%, transparent), 0 0 38px color-mix(in srgb, var(--tool-color) 72%, transparent), 0 0 74px color-mix(in srgb, var(--tool-color) 34%, transparent); transform: rotate(-8deg); }
+.physics-node:hover .tool-logo::before, .physics-node:hover .tool-logo::after, .physics-node:focus-visible .tool-logo::before, .physics-node:focus-visible .tool-logo::after { opacity: .9; animation: energyOrbit 1.7s linear infinite; }
+.physics-node:hover .tool-logo::after, .physics-node:focus-visible .tool-logo::after { animation-direction: reverse; animation-duration: 2.4s; }
+.physics-node:hover .tool-name, .physics-node:focus-visible .tool-name { color: var(--tool-color); text-shadow: 0 0 16px color-mix(in srgb, var(--tool-color) 60%, transparent); }
+.physics-constellation:has(.physics-node:hover) .physics-node:not(:hover) { opacity: .38; filter: saturate(.45); }
+@keyframes energyOrbit { to { transform: rotate(360deg); } }
+@media (max-width: 900px) { .toolkit-grid { grid-template-columns: 1fr; gap: 34px; }.physics-constellation { min-height: 610px; } }
+@media (max-width: 640px) { .physics-constellation { min-height: 630px; cursor: default; }.physics-node { width: 72px; min-width: 72px; }.physics-node .tool-logo { width: 39px; height: 39px; }.physics-node .tool-logo svg { width: 21px; height: 21px; }.physics-node .tool-name { max-width: 72px; font-size: 8px; }.physics-node .tool-category { display: none; }.physics-core { width: 69px; height: 69px; }.physics-core::before { inset: -14px; }.physics-core::after { inset: -27px; } }
+@media (prefers-reduced-motion: reduce) { .physics-core::before, .physics-core::after, .physics-node .tool-logo::before, .physics-node .tool-logo::after { animation: none; } }

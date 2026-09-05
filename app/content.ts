@@ -1,6 +1,6 @@
 export type Language = 'es' | 'en';
 
-export type Tool = { name: string; icon: string; category: string };
+export type Tool = { name: string; category: string };
 
 export type SiteCopy = {
   nav: { profile: string; cases: string; journey: string; contact: string };
@@ -75,7 +75,7 @@ export const copy: Record<Language, SiteCopy> = {
       { date: '11.2019 — 01.2021', company: 'CANTV', role: 'Desarrollador de Software', location: 'Venezuela', copy: 'Participé en sistemas de información para operaciones y en una base de datos MySQL para actualizar información de centrales. También desarrollé interfaces web con JavaScript, Bootstrap y Tailwind CSS.' },
     ],
     toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Las herramientas son el medio. El criterio, la diferencia.', toolkitHint: 'Explora el stack · mueve el cursor', toolkitTools: [
-      { name: 'Angular', icon: '△', category: 'Frontend' }, { name: 'TypeScript', icon: 'TS', category: 'Frontend' }, { name: 'JavaScript', icon: 'JS', category: 'Frontend' }, { name: 'Python', icon: 'Py', category: 'Backend' }, { name: 'FastAPI', icon: '⚡', category: 'Backend' }, { name: 'Flask', icon: 'ϟ', category: 'Backend' }, { name: 'Node.js', icon: '◈', category: 'Backend' }, { name: 'PostgreSQL', icon: 'PG', category: 'Data' }, { name: 'SQL Server', icon: 'SQL', category: 'Data' }, { name: 'Azure', icon: '☁', category: 'Cloud' }, { name: 'Supabase', icon: '✦', category: 'Data' }, { name: 'Docker', icon: '◇', category: 'Cloud' }, { name: 'REST APIs', icon: '↗', category: 'Architecture' }, { name: 'Microsoft Graph', icon: '⌘', category: 'Cloud' }, { name: 'CI/CD', icon: '⟳', category: 'Delivery' },
+      { name: 'Angular', category: 'Frontend' }, { name: 'TypeScript', category: 'Frontend' }, { name: 'JavaScript', category: 'Frontend' }, { name: 'Python', category: 'Backend' }, { name: 'FastAPI', category: 'Backend' }, { name: 'Flask', category: 'Backend' }, { name: 'Node.js', category: 'Backend' }, { name: 'PostgreSQL', category: 'Data' }, { name: 'SQL Server', category: 'Data' }, { name: 'Azure', category: 'Cloud' }, { name: 'Supabase', category: 'Data' }, { name: 'Docker', category: 'Cloud' }, { name: 'REST APIs', category: 'Architecture' }, { name: 'Microsoft Graph', category: 'Cloud' }, { name: 'CI/CD', category: 'Delivery' },
     ], contactKicker: '/ 05 — Contacto', contactTitle: '¿Tienes un reto interesante?', contactCopy: 'Estoy disponible para conversar sobre oportunidades Full-Stack en España y proyectos donde el software tenga que hacer algo más que funcionar.', cvShort: 'Descargar CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Volver arriba',
   },
   en: {
@@ -109,7 +109,7 @@ export const copy: Record<Language, SiteCopy> = {
       { date: '11.2019 — 01.2021', company: 'CANTV', role: 'Software Developer', location: 'Venezuela', copy: 'Contributed to operational information systems and a MySQL database for updating central-office data. Also developed web interfaces with JavaScript, Bootstrap and Tailwind CSS.' },
     ],
     toolkitKicker: '/ 04 — Toolkit', toolkitTitle: 'Tools are the medium. Judgment is the difference.', toolkitHint: 'Explore the stack · move your cursor', toolkitTools: [
-      { name: 'Angular', icon: '△', category: 'Frontend' }, { name: 'TypeScript', icon: 'TS', category: 'Frontend' }, { name: 'JavaScript', icon: 'JS', category: 'Frontend' }, { name: 'Python', icon: 'Py', category: 'Backend' }, { name: 'FastAPI', icon: '⚡', category: 'Backend' }, { name: 'Flask', icon: 'ϟ', category: 'Backend' }, { name: 'Node.js', icon: '◈', category: 'Backend' }, { name: 'PostgreSQL', icon: 'PG', category: 'Data' }, { name: 'SQL Server', icon: 'SQL', category: 'Data' }, { name: 'Azure', icon: '☁', category: 'Cloud' }, { name: 'Supabase', icon: '✦', category: 'Data' }, { name: 'Docker', icon: '◇', category: 'Cloud' }, { name: 'REST APIs', icon: '↗', category: 'Architecture' }, { name: 'Microsoft Graph', icon: '⌘', category: 'Cloud' }, { name: 'CI/CD', icon: '⟳', category: 'Delivery' },
+      { name: 'Angular', category: 'Frontend' }, { name: 'TypeScript', category: 'Frontend' }, { name: 'JavaScript', category: 'Frontend' }, { name: 'Python', category: 'Backend' }, { name: 'FastAPI', category: 'Backend' }, { name: 'Flask', category: 'Backend' }, { name: 'Node.js', category: 'Backend' }, { name: 'PostgreSQL', category: 'Data' }, { name: 'SQL Server', category: 'Data' }, { name: 'Azure', category: 'Cloud' }, { name: 'Supabase', category: 'Data' }, { name: 'Docker', category: 'Cloud' }, { name: 'REST APIs', category: 'Architecture' }, { name: 'Microsoft Graph', category: 'Cloud' }, { name: 'CI/CD', category: 'Delivery' },
     ], contactKicker: '/ 05 — Contact', contactTitle: 'Have an interesting challenge?', contactCopy: 'I am open to Full-Stack opportunities in Spain and projects where software has to do more than simply work.', cvShort: 'Download CV ↓', footerRole: 'Full-Stack Developer · Madrid', backTop: 'Back to top',
   },
 };
