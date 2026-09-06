@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-
 export const metadata: Metadata = {
+  metadataBase: new URL('https://catasistemas.com'),
   title: 'Francisco Catalán — Full-Stack Developer',
   description:
     'Portfolio profesional de Francisco Catalán, Full-Stack Developer especializado en plataformas corporativas, automatización, cloud e inteligencia artificial.',
@@ -14,15 +13,17 @@ export const metadata: Metadata = {
       'Software con criterio técnico, impacto operativo y una mirada end-to-end.',
     type: 'website',
     locale: 'es_ES',
-    images: [`${basePath}/og.png`],
+    url: '/',
+    images: ['/og.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Francisco Catalán — Full-Stack Developer',
     description:
       'Software con criterio técnico, impacto operativo y una mirada end-to-end.',
-    images: [`${basePath}/og.png`],
+    images: ['/og.png'],
   },
+  alternates: { canonical: '/' },
 };
 
 export default function RootLayout({
