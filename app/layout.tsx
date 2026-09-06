@@ -52,7 +52,10 @@ export const metadata: Metadata = {
       'Software con criterio técnico, impacto operativo y una mirada end-to-end.',
     images: ['/og.png'],
   },
-  alternates: { canonical: '/' },
+  alternates: {
+    canonical: '/',
+    languages: { 'es-ES': '/', 'en-US': '/en/' },
+  },
 };
 
 export default function RootLayout({

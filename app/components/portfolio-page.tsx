@@ -8,22 +8,33 @@ import ToolkitConstellation from './toolkit-constellation';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
+type PortfolioPageProps = {
+  initialLanguage?: Language;
+  respectStoredLanguage?: boolean;
+};
+
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return <div className={`reveal ${className}`}>{children}</div>;
 }
 
-export default function PortfolioPage() {
+export default function PortfolioPage({
+  initialLanguage = 'es',
+  respectStoredLanguage = true,
+}: PortfolioPageProps = {}) {
   const shellRef = useRef<HTMLElement>(null);
-  const [language, setLanguage] = useState<Language>('es');
+  const [language, setLanguage] = useState<Language>(initialLanguage);
   const t = copy[language];
 
   useEffect(() => {
     const stored = window.localStorage.getItem('fc-language') as Language | null;
-    if (stored === 'es' || stored === 'en') {
-      window.setTimeout(() => setLanguage(stored), 0);
+    const nextLanguage = respectStoredLanguage && (stored === 'es' || stored === 'en')
+      ? stored
+      : initialLanguage;
+    if (nextLanguage !== initialLanguage) {
+      window.setTimeout(() => setLanguage(nextLanguage), 0);
     }
-    document.documentElement.lang = stored ?? 'es';
-  }, []);
+    document.documentElement.lang = nextLanguage;
+  }, [initialLanguage, respectStoredLanguage]);
 
   useEffect(() => {
     const shell = shellRef.current;
@@ -57,13 +68,13 @@ export default function PortfolioPage() {
   }, []);
 
   const changeLanguage = (nextLanguage: Language) => {
-    setLanguage(nextLanguage);
     window.localStorage.setItem('fc-language', nextLanguage);
-    document.documentElement.lang = nextLanguage;
+    const nextPath = nextLanguage === 'en' ? `${basePath}/en/` : `${basePath}/`;
+    window.location.assign(nextPath);
   };
 
   return (
-    <main ref={shellRef} className="site-shell">
+    <main ref={shellRef} className="site-shell" lang={language}>
       <div className="scroll-progress" aria-hidden="true" />
       <div className="noise" aria-hidden="true" />
       <header className="site-header">
