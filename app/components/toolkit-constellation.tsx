@@ -66,9 +66,9 @@ const visuals: Record<string, { Icon: IconType; color: string }> = {
 const particleColors = ['#d7fa58', '#9b7cff', '#ffffff', '#4f8cff', '#ff835c'];
 
 export default function ToolkitConstellation({ tools, label, hint }: ToolkitConstellationProps) {
-  const fieldRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<HTMLUListElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const nodeRefs = useRef<(HTMLElement | null)[]>([]);
   const pointerRef = useRef({ x: 0, y: 0, active: false });
 
   useEffect(() => {
@@ -300,10 +300,10 @@ export default function ToolkitConstellation({ tools, label, hint }: ToolkitCons
       observer.disconnect();
       window.cancelAnimationFrame(frame);
     };
-  }, [tools.length]);
+  }, [tools]);
 
   return (
-    <div
+    <ul
       ref={fieldRef}
       className="toolkit-constellation physics-constellation"
       onPointerMove={(event) => {
@@ -319,7 +319,6 @@ export default function ToolkitConstellation({ tools, label, hint }: ToolkitCons
         event.currentTarget.style.setProperty('--field-x', '50%');
         event.currentTarget.style.setProperty('--field-y', '50%');
       }}
-      role="list"
       aria-label={label}
     >
       <canvas ref={canvasRef} className="constellation-canvas" aria-hidden="true" />
@@ -333,14 +332,12 @@ export default function ToolkitConstellation({ tools, label, hint }: ToolkitCons
         const color = visual?.color ?? '#d7fa58';
 
         return (
-          <div
+          <li
             ref={(element) => {
               nodeRefs.current[index] = element;
             }}
             className="tool-node physics-node"
             key={tool.name}
-            role="listitem"
-            tabIndex={0}
             aria-label={`${tool.name}, ${tool.category}`}
             style={{ '--tool-color': color } as React.CSSProperties}
           >
@@ -349,9 +346,9 @@ export default function ToolkitConstellation({ tools, label, hint }: ToolkitCons
               <span className="tool-name">{tool.name}</span>
               <span className="tool-category">{tool.category}</span>
             </div>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }

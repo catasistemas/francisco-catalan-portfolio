@@ -167,7 +167,7 @@ h1 span { display: block; margin-left: 12%; color: var(--violet); font-style: it
 /* Physics-driven toolkit with recognizable technology marks. */
 .toolkit-grid { grid-template-columns: .72fr 1.28fr; gap: 48px; }
 .physics-constellation { min-height: 590px; cursor: crosshair; background: radial-gradient(circle at var(--field-x, 50%) var(--field-y, 50%), rgba(155,124,255,.22), transparent 16%), radial-gradient(circle at 50% 50%, rgba(215,250,88,.07), transparent 35%), #0b0d10; }
-.physics-constellation::before { opacity: .2; background-size: 42px 42px; animation-duration: 28s; }
+.physics-constellation { margin: 0; padding: 0; list-style: none; }.physics-constellation::before { opacity: .2; background-size: 42px 42px; animation-duration: 28s; }
 .physics-constellation::after { background: radial-gradient(circle at var(--field-x, 50%) var(--field-y, 50%), rgba(255,255,255,.25), transparent 2%, rgba(155,124,255,.12) 7%, transparent 17%); }
 .constellation-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .physics-core { z-index: 2; width: 88px; height: 88px; border-color: rgba(215,250,88,.68); background: rgba(7,9,12,.74); box-shadow: 0 0 0 12px rgba(215,250,88,.018), 0 0 54px rgba(155,124,255,.28); backdrop-filter: blur(8px); }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { ArrowDown, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
 import { copy, Language } from '../content';
 import ToolkitConstellation from './toolkit-constellation';
@@ -18,7 +19,9 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     const stored = window.localStorage.getItem('fc-language') as Language | null;
-    if (stored === 'es' || stored === 'en') setLanguage(stored);
+    if (stored === 'es' || stored === 'en') {
+      window.setTimeout(() => setLanguage(stored), 0);
+    }
     document.documentElement.lang = stored ?? 'es';
   }, []);
 
@@ -88,7 +91,7 @@ export default function PortfolioPage() {
         </Reveal>
         <Reveal className="hero-visual">
           <div className="hero-cursor-orb" aria-hidden="true" /><div className="hero-orbit orbit-one" aria-hidden="true" /><div className="hero-orbit orbit-two" aria-hidden="true" /><div className="hero-orbit orbit-three" aria-hidden="true" />
-          <div className="portrait-frame"><img src={`${basePath}/francisco-avatar.png`} alt={language === 'es' ? 'Retrato editorial de Francisco Catalán' : 'Editorial portrait of Francisco Catalán'} /><span className="portrait-glow" aria-hidden="true" /></div>
+          <div className="portrait-frame"><Image src={`${basePath}/francisco-avatar.png`} alt={language === 'es' ? 'Retrato editorial de Francisco Catalán' : 'Editorial portrait of Francisco Catalán'} width={760} height={980} sizes="(max-width: 900px) 76vw, 395px" priority unoptimized /><span className="portrait-glow" aria-hidden="true" /></div>
           <div className="portrait-caption"><span>01 / 04</span><span>{t.portraitCaption}</span></div>
           <div className="floating-note note-top"><span className="note-label">{t.focus}</span><strong>End-to-end</strong></div><div className="floating-note note-bottom"><span className="note-label">{t.learning}</span><strong>Big Data &amp; Analytics</strong></div>
           <div className="scroll-cue"><span>Scroll to explore</span><ArrowDown size={15} aria-hidden="true" /></div>
