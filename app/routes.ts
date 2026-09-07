@@ -1,0 +1,17 @@
+import type { Language } from './content';
+
+export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '');
+
+export const routes = {
+  home: { es: '/', en: '/en/' },
+  collections: {
+    es: '/casos/distribucion-carteras/',
+    en: '/en/cases/collections-allocation/',
+  },
+} as const;
+
+export type PageKey = keyof typeof routes;
+
+export function pageHref(page: PageKey, language: Language) {
+  return `${basePath}${routes[page][language]}`;
+}

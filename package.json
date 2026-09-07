@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build && node scripts/prepare-pages.mjs",
+    "preview": "node scripts/preview.mjs",
+    "test:routes": "node scripts/verify-static-routes.mjs",
+    "test:projects": "node scripts/verify-projects.mjs",
     "lint": "oxlint",
     "format": "oxfmt"
   },

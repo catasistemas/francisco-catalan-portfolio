@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { ArrowDown, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
 import { copy, Language } from '../content';
 import ToolkitConstellation from './toolkit-constellation';
+import SiteHeader from './site-header';
+import SiteFooter from './site-footer';
+import ProjectCards from './project-cards';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
@@ -62,19 +65,7 @@ export default function PortfolioPage({
     <main ref={shellRef} className="site-shell" lang={language}>
       <div className="scroll-progress" aria-hidden="true" />
       <div className="noise" aria-hidden="true" />
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="Francisco Catalán, inicio"><span className="brand-mark">FC</span><span className="brand-name">Francisco Catalán</span></a>
-        <nav className="main-nav" aria-label="Navegación principal">
-          <a href="#perfil">{t.nav.profile}</a><a href="#casos">{t.nav.cases}</a><a href="#trayectoria">{t.nav.journey}</a><a href="#contacto">{t.nav.contact}</a>
-        </nav>
-        <div className="header-actions">
-          <div className="language-switcher" aria-label={t.languageLabel}>
-            <a className={language === 'es' ? 'language-button is-active' : 'language-button'} href={`${basePath}/`} hrefLang="es" aria-label="Español" aria-current={language === 'es' ? 'page' : undefined}><span className="flag flag-spain" aria-hidden="true" /></a>
-            <a className={language === 'en' ? 'language-button is-active' : 'language-button'} href={`${basePath}/en/`} hrefLang="en" aria-label="English (United States)" aria-current={language === 'en' ? 'page' : undefined}><span className="flag flag-united-states" aria-hidden="true" /></a>
-          </div>
-          <a className="header-link" href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" /></a>
-        </div>
-      </header>
+      <SiteHeader language={language} />
 
       <section id="top" className="hero section-wrap">
         <div className="hero-grid-lines" aria-hidden="true" />
@@ -100,7 +91,7 @@ export default function PortfolioPage({
 
       <section className="services-section"><div className="section-wrap"><Reveal><div className="section-kicker">{t.servicesKicker}</div></Reveal><div className="services-grid">{t.services.map((service) => <Reveal className="service-item" key={service.number}><span className="service-number">{service.number}</span><h3>{service.title}</h3><p>{service.copy}</p></Reveal>)}</div></div></section>
 
-      <section id="casos" className="cases-section section-wrap"><Reveal><div className="section-heading"><div className="section-kicker">{t.casesKicker}</div><p>{t.casesIntro}</p></div></Reveal><div className="cases-grid">{t.cases.map((item, index) => <Reveal className="case-card-wrap" key={item.index}><article className={`case-card tone-${item.tone}`} style={{ '--card-index': index } as React.CSSProperties}><div className="case-topline"><span>{item.index}</span><span>{item.eyebrow}</span></div><div className="case-symbol" aria-hidden="true"><span /></div><h3>{item.title}</h3><p>{item.description}</p><div className="case-bottom"><div><span className="case-label">{item.resultLabel}</span><strong>{item.result}</strong></div><div><span className="case-label">{item.stackLabel}</span><span>{item.tools}</span></div></div></article></Reveal>)}</div></section>
+      <section id="casos" className="cases-section section-wrap"><Reveal><div className="section-heading"><div className="section-kicker">{t.casesKicker}</div><p>{t.casesIntro}</p></div></Reveal><ProjectCards language={language} /></section>
 
       <section className="numbers-band section-wrap" aria-label={t.statsLabel}>{t.stats.map((stat) => <div className="number-item" key={stat.value}><strong className={stat.value.length > 7 ? 'number-value-compact' : undefined}>{stat.value}</strong><span>{stat.line1}<br />{stat.line2}</span></div>)}</section>
 
@@ -109,7 +100,7 @@ export default function PortfolioPage({
       <section id="toolkit" className="toolkit section-wrap"><Reveal><div className="section-kicker">{t.toolkitKicker}</div></Reveal><div className="toolkit-grid"><Reveal><h2>{t.toolkitTitle}</h2></Reveal><Reveal className="toolkit-constellation-wrap"><ToolkitConstellation tools={t.toolkitTools} label={t.toolkitTitle} hint={t.toolkitHint} /></Reveal></div></section>
 
       <section id="contacto" className="contact-section section-wrap"><Reveal className="contact-card"><div className="contact-copy"><div className="section-kicker">{t.contactKicker}</div><h2>{t.contactTitle}</h2><p>{t.contactCopy}</p></div><div className="contact-actions"><a className="contact-email" href="mailto:catalan.sistemas@gmail.com">catalan.sistemas@gmail.com <ArrowUpRight size={19} aria-hidden="true" /></a><div className="contact-links"><a href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} ↗</a><a href={`${basePath}/CV_Francisco_Catalan_FullStack.pdf`} download>{t.cvShort}</a></div></div></Reveal></section>
-      <footer className="site-footer section-wrap"><span>© {new Date().getFullYear()} Francisco Catalán</span><span>{t.footerRole}</span><a href="#top"><MoveUpRight size={13} aria-hidden="true" /> {t.backTop}</a></footer>
+      <SiteFooter language={language} />
       <div className="floating-sparkle" aria-hidden="true"><Sparkles size={16} /></div>
     </main>
   );
