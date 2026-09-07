@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   creator: 'Francisco Catalán',
   publisher: 'Francisco Catalán',
   robots: { index: true, follow: true },
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: { url: '/favicon.svg?v=fc-1', type: 'image/svg+xml', sizes: 'any' } },
   openGraph: {
     title: 'Francisco Catalán — Full-Stack Developer',
     description:
