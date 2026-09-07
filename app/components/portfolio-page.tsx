@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { ArrowDown, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
 import { copy, Language } from '../content';
@@ -10,7 +10,6 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 type PortfolioPageProps = {
   initialLanguage?: Language;
-  respectStoredLanguage?: boolean;
 };
 
 function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -19,22 +18,14 @@ function Reveal({ children, className = '' }: { children: React.ReactNode; class
 
 export default function PortfolioPage({
   initialLanguage = 'es',
-  respectStoredLanguage = true,
 }: PortfolioPageProps = {}) {
   const shellRef = useRef<HTMLElement>(null);
-  const [language, setLanguage] = useState<Language>(initialLanguage);
+  const language = initialLanguage;
   const t = copy[language];
 
   useEffect(() => {
-    const stored = window.localStorage.getItem('fc-language') as Language | null;
-    const nextLanguage = respectStoredLanguage && (stored === 'es' || stored === 'en')
-      ? stored
-      : initialLanguage;
-    if (nextLanguage !== initialLanguage) {
-      window.setTimeout(() => setLanguage(nextLanguage), 0);
-    }
-    document.documentElement.lang = nextLanguage;
-  }, [initialLanguage, respectStoredLanguage]);
+    document.documentElement.lang = language;
+  }, [language]);
 
   useEffect(() => {
     const shell = shellRef.current;
@@ -67,12 +58,6 @@ export default function PortfolioPage({
     };
   }, []);
 
-  const changeLanguage = (nextLanguage: Language) => {
-    window.localStorage.setItem('fc-language', nextLanguage);
-    const nextPath = nextLanguage === 'en' ? `${basePath}/en/` : `${basePath}/`;
-    window.location.assign(nextPath);
-  };
-
   return (
     <main ref={shellRef} className="site-shell" lang={language}>
       <div className="scroll-progress" aria-hidden="true" />
@@ -84,8 +69,8 @@ export default function PortfolioPage({
         </nav>
         <div className="header-actions">
           <div className="language-switcher" aria-label={t.languageLabel}>
-            <button className={language === 'es' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('es')} aria-label="Español" aria-pressed={language === 'es'}><span className="flag flag-spain" aria-hidden="true" /></button>
-            <button className={language === 'en' ? 'language-button is-active' : 'language-button'} onClick={() => changeLanguage('en')} aria-label="English (United States)" aria-pressed={language === 'en'}><span className="flag flag-united-states" aria-hidden="true" /></button>
+            <a className={language === 'es' ? 'language-button is-active' : 'language-button'} href={`${basePath}/`} hrefLang="es" aria-label="Español" aria-current={language === 'es' ? 'page' : undefined}><span className="flag flag-spain" aria-hidden="true" /></a>
+            <a className={language === 'en' ? 'language-button is-active' : 'language-button'} href={`${basePath}/en/`} hrefLang="en" aria-label="English (United States)" aria-current={language === 'en' ? 'page' : undefined}><span className="flag flag-united-states" aria-hidden="true" /></a>
           </div>
           <a className="header-link" href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" /></a>
         </div>

@@ -29,6 +29,8 @@ jobs:
         run: npm ci
       - name: Build static site
         run: npm run build
+      - name: Verify static language routes
+        run: node scripts/verify-static-routes.mjs
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
