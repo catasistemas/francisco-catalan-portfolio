@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import ScrollProbe from './components/scroll-probe';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -67,6 +68,7 @@ export default function RootLayout({
     <html lang="es">
       <body>
         {children}
+        <ScrollProbe />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

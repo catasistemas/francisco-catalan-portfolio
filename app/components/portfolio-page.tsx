@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { copy, Language } from '../content';
 import ToolkitConstellation from './toolkit-constellation';
 import SiteHeader from './site-header';
@@ -102,7 +102,6 @@ export default function PortfolioPage({
 
       <section id="contacto" className="contact-section section-wrap"><Reveal className="contact-card"><div className="contact-copy"><div className="section-kicker">{t.contactKicker}</div><h2>{t.contactTitle}</h2><p>{t.contactCopy}</p></div><div className="contact-actions"><a className="contact-email" href="mailto:catalan.sistemas@gmail.com">catalan.sistemas@gmail.com <ArrowUpRight size={19} aria-hidden="true" /></a><div className="contact-links"><a href="https://www.linkedin.com/in/francisco-catalan-289a6115b/" target="_blank" rel="noreferrer">{t.linkedin} ↗</a><a href={`${basePath}/CV_Francisco_Catalan_FullStack.pdf`} download>{t.cvShort}</a></div></div></Reveal></section>
       <SiteFooter language={language} />
-      <div className="floating-sparkle" aria-hidden="true"><Sparkles size={16} /></div>
     </main>
   );
 }

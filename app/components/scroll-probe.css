@@ -1,0 +1,47 @@
+.scroll-probe {
+  --probe-progress: 0;
+  position: fixed;
+  top: 92px;
+  right: 8px;
+  bottom: 42px;
+  z-index: 35;
+  width: 72px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.scroll-probe.is-visible { opacity: 1; visibility: visible; }
+.scroll-probe-track { position: absolute; top: 0; right: 19px; bottom: 0; width: 1px; overflow: hidden; background: rgba(155,124,255,.22); }
+.scroll-probe-track span { display: block; width: 100%; height: calc(var(--probe-progress) * 100%); background: linear-gradient(180deg, var(--violet), var(--lime)); box-shadow: 0 0 9px rgba(215,250,88,.7); transition: height .12s linear; }
+.scroll-probe-link { position: absolute; top: calc(var(--probe-progress) * 100%); right: 0; display: flex; align-items: center; gap: 10px; min-width: 46px; min-height: 46px; color: var(--ink); pointer-events: auto; transform: translate3d(var(--probe-x, 0), calc(-50% + var(--probe-y, 0)), 0); transition: top .12s linear, transform .22s cubic-bezier(.2,.75,.25,1); }
+.scroll-probe-core { position: relative; display: grid; flex: 0 0 auto; place-items: center; width: 42px; height: 42px; overflow: visible; border: 1px solid rgba(155,124,255,.72); border-radius: 50%; color: var(--ink); background: rgba(12,12,12,.84); box-shadow: 0 0 0 5px rgba(12,12,12,.2), 0 9px 28px rgba(0,0,0,.28), inset 0 0 18px rgba(155,124,255,.08); backdrop-filter: blur(12px); animation: probeBreathe 3.8s ease-in-out infinite; transition: border-color .3s ease, box-shadow .3s ease, transform .3s cubic-bezier(.2,.75,.25,1); }
+.scroll-probe-label { order: -1; max-width: 0; overflow: hidden; color: var(--ink); font-size: 9px; font-weight: 700; line-height: 1; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: max-width .3s ease, opacity .22s ease, transform .3s ease; }
+.scroll-probe-arrow { position: relative; z-index: 2; transition: transform .3s cubic-bezier(.2,.75,.25,1), color .3s ease; }
+.scroll-probe-spark { position: absolute; top: 4px; right: 3px; z-index: 3; color: var(--lime); filter: drop-shadow(0 0 5px rgba(215,250,88,.7)); animation: probeSpark 4.8s linear infinite; }
+.scroll-probe-orbit { position: absolute; inset: -5px; border: 1px solid rgba(215,250,88,.24); border-radius: 50%; animation: probeOrbit 7s linear infinite; }
+.scroll-probe-orbit i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 7px rgba(215,250,88,.8); }
+.scroll-probe-orbit i:first-child { top: 5px; left: 7px; }.scroll-probe-orbit i:last-child { right: 4px; bottom: 8px; width: 3px; height: 3px; background: var(--violet); box-shadow: 0 0 7px rgba(155,124,255,.9); }
+.scroll-probe-link:hover .scroll-probe-label, .scroll-probe-link:focus-visible .scroll-probe-label { max-width: 112px; opacity: 1; transform: translateX(0); }
+.scroll-probe-link:hover .scroll-probe-core, .scroll-probe-link:focus-visible .scroll-probe-core { border-color: var(--lime); box-shadow: 0 0 0 5px rgba(12,12,12,.24), 0 0 30px rgba(155,124,255,.33), inset 0 0 20px rgba(215,250,88,.12); transform: scale(1.08); }
+.scroll-probe-link:hover .scroll-probe-arrow, .scroll-probe-link:focus-visible .scroll-probe-arrow { color: var(--lime); transform: translateY(-3px); }
+.scroll-probe-link:focus-visible { border-radius: 999px; outline: 2px solid var(--lime); outline-offset: 5px; }
+.scroll-probe.is-near-end .scroll-probe-core { border-color: var(--lime); box-shadow: 0 0 0 5px rgba(12,12,12,.2), 0 0 24px rgba(215,250,88,.24); }
+
+@keyframes probeBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+@keyframes probeOrbit { to { transform: rotate(360deg); } }
+@keyframes probeSpark { 0%, 72%, 100% { opacity: .45; transform: scale(.82) rotate(0); } 82% { opacity: 1; transform: scale(1.14) rotate(24deg); } }
+
+@media (max-width: 700px) {
+  .scroll-probe { top: auto; right: 14px; bottom: 15px; width: auto; height: auto; }
+  .scroll-probe-track { display: none; }
+  .scroll-probe-link { position: static; transform: none; transition: none; }
+  .scroll-probe-core { width: 46px; height: 46px; }
+  .scroll-probe-label { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-probe, .scroll-probe-track span, .scroll-probe-link, .scroll-probe-core, .scroll-probe-label, .scroll-probe-arrow { transition: none; }
+  .scroll-probe-core, .scroll-probe-orbit, .scroll-probe-spark { animation: none; }
+}

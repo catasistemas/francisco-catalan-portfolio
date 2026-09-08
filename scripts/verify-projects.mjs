@@ -32,6 +32,7 @@ const practicalCopy = {
     'I connect systems, documents and data so they can operate securely and scale without losing control.',
   ],
 };
+const probeLabels = { es: 'Volver arriba', en: 'Back to top' };
 
 async function visit(page, path) {
   const response = await page.goto(`${origin}${prefix}${path}`);
@@ -46,6 +47,32 @@ try {
   page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
   for (const [language, path] of [['es', pages.es], ['en', pages.en]]) {
     await visit(page, path);
+    const probe = page.locator('.scroll-probe');
+    const probeLink = page.locator('.scroll-probe-link');
+    assert.equal(await probe.count(), 1, 'One global scroll probe');
+    assert.equal(await probeLink.getAttribute('href'), '#top');
+    assert.equal(await probeLink.getAttribute('aria-label'), probeLabels[language]);
+    assert.equal(await probe.getAttribute('aria-hidden'), 'true');
+    assert.equal(await probeLink.getAttribute('tabindex'), '-1');
+    await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; const max = document.documentElement.scrollHeight - innerHeight; scrollTo(0, max * .32); });
+    await page.waitForTimeout(180);
+    assert.equal(await probe.getAttribute('aria-hidden'), 'false');
+    assert.equal(await probeLink.getAttribute('tabindex'), '0');
+    const firstProbeY = (await probeLink.boundingBox()).y;
+    await page.evaluate(() => { const max = document.documentElement.scrollHeight - innerHeight; scrollTo(0, max * .72); });
+    await page.waitForTimeout(180);
+    const secondProbeY = (await probeLink.boundingBox()).y;
+    assert.ok(secondProbeY > firstProbeY + 100, 'Probe must travel down its rail with reading progress');
+    await probeLink.hover();
+    await page.waitForTimeout(350);
+    assert.ok(parseFloat(await page.locator('.scroll-probe-label').evaluate((node) => getComputedStyle(node).opacity)) > .9, 'Probe label appears on hover');
+    assert.ok(await probeLink.evaluate((node) => !!node.style.getPropertyValue('--probe-x')), 'Probe reacts magnetically to the pointer');
+    await probeLink.focus();
+    assert.ok(parseFloat(await probeLink.evaluate((node) => getComputedStyle(node).outlineWidth)) >= 2, 'Visible probe focus');
+    await page.screenshot({ path: `${screenshots}/probe-${language}-desktop.png` });
+    await page.evaluate(() => { document.documentElement.style.removeProperty('scroll-behavior'); });
+    await probeLink.click();
+    await page.waitForFunction(() => window.scrollY < 2);
     const trajectoryHeading = page.locator('.trajectory-heading h2');
     const trajectoryAside = page.locator('.trajectory-heading .trajectory-aside');
     assert.equal(await trajectoryHeading.count(), 1, 'One trajectory heading');
@@ -144,6 +171,10 @@ try {
   await page.mouse.move(bounds.x + 80, bounds.y + 80);
   const reduced = await host.evaluate((node) => ({ tilt: node.style.getPropertyValue('--tilt-y'), transform: getComputedStyle(node.querySelector('.project-card')).transform, animation: getComputedStyle(node.querySelector('.visual-float')).animationName }));
   assert.equal(reduced.tilt, ''); assert.equal(reduced.transform, 'none'); assert.equal(reduced.animation, 'none');
+  await page.evaluate(() => scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * .5));
+  await page.waitForTimeout(120);
+  const reducedProbe = await page.locator('.scroll-probe-core').evaluate((node) => ({ animation: getComputedStyle(node).animationName, transition: getComputedStyle(node).transitionDuration }));
+  assert.equal(reducedProbe.animation, 'none'); assert.equal(reducedProbe.transition, '0s');
   await page.locator('.capability-trigger').nth(1).hover();
   const reducedCapability = await page.locator('.capability-card').nth(1).evaluate((node) => ({ transform: getComputedStyle(node).transform, signal: getComputedStyle(node.querySelector('.capability-signal')).animationName }));
   assert.equal(reducedCapability.transform, 'none'); assert.equal(reducedCapability.signal, 'none');
@@ -171,6 +202,16 @@ try {
   }
   await phone.setViewportSize({ width: 390, height: 844 });
   await visit(phone, pages.es);
+  await phone.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * .5); });
+  await phone.waitForTimeout(180);
+  const mobileProbe = phone.locator('.scroll-probe-link');
+  assert.equal(await phone.locator('.scroll-probe').getAttribute('aria-hidden'), 'false');
+  const mobileProbeBox = await mobileProbe.boundingBox();
+  assert.ok(mobileProbeBox.width >= 44 && mobileProbeBox.height >= 44, 'Probe touch target at least 44px');
+  assert.equal(await phone.locator('.scroll-probe-track').evaluate((node) => getComputedStyle(node).display), 'none');
+  await phone.screenshot({ path: `${screenshots}/probe-mobile.png` });
+  await mobileProbe.tap();
+  await phone.waitForFunction(() => window.scrollY < 2);
   assert.equal(await phone.locator('.capability-card').count(), 3);
   await phone.locator('.capability-trigger').nth(1).tap();
   assert.equal(await phone.locator('.capability-trigger').nth(1).getAttribute('aria-pressed'), 'true');
