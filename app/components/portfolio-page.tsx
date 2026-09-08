@@ -8,6 +8,7 @@ import ToolkitConstellation from './toolkit-constellation';
 import SiteHeader from './site-header';
 import SiteFooter from './site-footer';
 import ProjectCards from './project-cards';
+import CapabilitiesLab from './capabilities-lab';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
@@ -89,7 +90,7 @@ export default function PortfolioPage({
 
       <section id="perfil" className="intro-band section-wrap"><Reveal><div className="section-kicker">{t.profileKicker}</div></Reveal><div className="intro-grid"><Reveal><h2>{t.profileTitle}</h2></Reveal><Reveal className="intro-body"><p>{t.profileParagraphs[0]}</p><p>{t.profileParagraphs[1]}</p><a className="text-link" href="mailto:catalan.sistemas@gmail.com">{t.emailCta} <ArrowUpRight size={15} aria-hidden="true" /></a></Reveal></div></section>
 
-      <section className="services-section"><div className="section-wrap"><Reveal><div className="section-kicker">{t.servicesKicker}</div></Reveal><div className="services-grid">{t.services.map((service) => <Reveal className="service-item" key={service.number}><span className="service-number">{service.number}</span><h3>{service.title}</h3><p>{service.copy}</p></Reveal>)}</div></div></section>
+      <section className="services-section"><div className="section-wrap"><Reveal><div className="section-kicker">{t.servicesKicker}</div><p className="services-intro">{t.servicesIntro}</p></Reveal><CapabilitiesLab capabilities={t.services} practiceLabel={t.practiceLabel} /></div></section>
 
       <section id="casos" className="cases-section section-wrap"><Reveal><div className="section-heading"><div className="section-kicker">{t.casesKicker}</div><p>{t.casesIntro}</p></div></Reveal><ProjectCards language={language} /></section>
 

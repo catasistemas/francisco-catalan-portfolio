@@ -20,6 +20,18 @@ const pages = {
   ],
 };
 const errors = [];
+const practicalCopy = {
+  es: [
+    'Diseño productos completos, desde la interfaz hasta los procesos que los mantienen funcionando en producción.',
+    'Convierto tareas repetitivas y documentación compleja en procesos más rápidos, trazables y medibles.',
+    'Conecto sistemas, documentos y datos para que puedan operar con seguridad y crecer sin perder control.',
+  ],
+  en: [
+    'I design complete products, from the interface to the processes that keep them running in production.',
+    'I turn repetitive tasks and complex documentation into faster, traceable and measurable processes.',
+    'I connect systems, documents and data so they can operate securely and scale without losing control.',
+  ],
+};
 
 async function visit(page, path) {
   const response = await page.goto(`${origin}${prefix}${path}`);
@@ -34,6 +46,25 @@ try {
   page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
   for (const [language, path] of [['es', pages.es], ['en', pages.en]]) {
     await visit(page, path);
+    const capabilities = page.locator('.capability-card');
+    const triggers = page.locator('.capability-trigger');
+    const lab = page.locator('.capabilities-lab');
+    assert.equal(await capabilities.count(), 3);
+    assert.equal(await page.locator('.capability-node').count(), 12);
+    assert.equal(await triggers.nth(0).getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('.capabilities-practice p').innerText(), practicalCopy[language][0]);
+    const initialHeight = (await lab.boundingBox()).height;
+    await triggers.nth(1).hover();
+    assert.equal(await triggers.nth(1).getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('.capabilities-practice p').innerText(), practicalCopy[language][1]);
+    await triggers.nth(2).focus();
+    assert.equal(await triggers.nth(2).getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('.capabilities-practice p').innerText(), practicalCopy[language][2]);
+    assert.ok(parseFloat(await triggers.nth(2).evaluate((trigger) => getComputedStyle(trigger).outlineWidth)) >= 2, 'Visible capability focus');
+    assert.equal(await page.locator('.capability-card.is-active .capability-details').getAttribute('aria-hidden'), 'false');
+    await page.waitForTimeout(450);
+    assert.ok(Math.abs((await lab.boundingBox()).height - initialHeight) <= 1, 'Capability switching must not shift layout');
+    await lab.screenshot({ path: `${screenshots}/capabilities-${language}-desktop.png` });
     assert.equal(await page.locator('.project-card').count(), 4);
     assert.equal(await page.locator('.project-case-link').count(), 4);
     for (const [index, casePage] of pages.cases.entries()) {
@@ -102,6 +133,9 @@ try {
   await page.mouse.move(bounds.x + 80, bounds.y + 80);
   const reduced = await host.evaluate((node) => ({ tilt: node.style.getPropertyValue('--tilt-y'), transform: getComputedStyle(node.querySelector('.project-card')).transform, animation: getComputedStyle(node.querySelector('.visual-float')).animationName }));
   assert.equal(reduced.tilt, ''); assert.equal(reduced.transform, 'none'); assert.equal(reduced.animation, 'none');
+  await page.locator('.capability-trigger').nth(1).hover();
+  const reducedCapability = await page.locator('.capability-card').nth(1).evaluate((node) => ({ transform: getComputedStyle(node).transform, signal: getComputedStyle(node.querySelector('.capability-signal')).animationName }));
+  assert.equal(reducedCapability.transform, 'none'); assert.equal(reducedCapability.signal, 'none');
   console.log('PASS: local pointer tilt, reset on leave, prefers-reduced-motion.');
 
   const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
@@ -123,9 +157,18 @@ try {
   }
   await phone.setViewportSize({ width: 390, height: 844 });
   await visit(phone, pages.es);
+  assert.equal(await phone.locator('.capability-card').count(), 3);
+  await phone.locator('.capability-trigger').nth(1).tap();
+  assert.equal(await phone.locator('.capability-trigger').nth(1).getAttribute('aria-pressed'), 'true');
+  assert.equal(await phone.locator('.capabilities-practice p').innerText(), practicalCopy.es[1]);
+  assert.ok((await phone.locator('.capability-trigger').nth(1).boundingBox()).height >= 44, 'Capability touch target at least 44px');
+  await phone.locator('.capabilities-lab').screenshot({ path: `${screenshots}/capabilities-mobile.png` });
   await phone.locator('.project-card-wrap').nth(3).scrollIntoViewIfNeeded();
   await phone.screenshot({ path: `${screenshots}/cards-mobile.png` });
-  assert.equal(await phone.locator('.visual-float').first().evaluate((node) => getComputedStyle(node).animationName), 'none');
+  assert.equal(await phone.locator('.project-card-wrap').nth(3).evaluate((node) => node.style.getPropertyValue('--tilt-y')), '', 'Touch must not set pointer tilt');
+  await phone.emulateMedia({ reducedMotion: 'reduce' });
+  const reducedMobileCapability = await phone.locator('.capability-card').nth(1).evaluate((node) => ({ transform: getComputedStyle(node).transform, signal: getComputedStyle(node.querySelector('.capability-signal')).display }));
+  assert.equal(reducedMobileCapability.transform, 'none'); assert.equal(reducedMobileCapability.signal, 'none');
   await phone.locator('.project-case-link').nth(3).tap();
   await phone.waitForURL(`${origin}${prefix}${pages.cases[3].es}`);
   await phone.getByRole('link', { name: 'English (United States)', exact: true }).tap();

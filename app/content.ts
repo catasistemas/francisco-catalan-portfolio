@@ -1,6 +1,17 @@
 export type Language = 'es' | 'en';
 
 export type Tool = { name: string; category: string };
+export type Capability = {
+  number: string;
+  title: string;
+  copy: string;
+  flow: string[];
+  tools: string[];
+  microcopy: string;
+  accent: 'violet' | 'lime' | 'blue';
+  visualType: 'architecture' | 'automation' | 'cloud';
+  practicalCopy: string;
+};
 
 export type SiteCopy = {
   nav: { profile: string; cases: string; journey: string; contact: string };
@@ -21,7 +32,9 @@ export type SiteCopy = {
   profileParagraphs: string[];
   emailCta: string;
   servicesKicker: string;
-  services: { number: string; title: string; copy: string }[];
+  servicesIntro: string;
+  practiceLabel: string;
+  services: Capability[];
   casesKicker: string;
   casesIntro: string;
   cases: { index: string; eyebrow: string; title: string; description: string; resultLabel: string; result: string; stackLabel: string; tools: string; tone: string }[];
@@ -54,10 +67,12 @@ export const copy: Record<Language, SiteCopy> = {
     profileKicker: '/ 01 — Perfil', profileTitle: 'La tecnología funciona mejor cuando entiende a las personas.',
     profileParagraphs: ['Soy ingeniero en sistemas y desarrollador Full-Stack. Me muevo entre frontend, backend y negocio para convertir necesidades reales en software que se puede mantener, medir y hacer crecer.', 'Actualmente trabajo en soluciones con inteligencia artificial mientras curso un Máster en Big Data & Business Analytics. Mi forma de aportar combina criterio técnico, comunicación directa y obsesión por quitar fricción.'],
     emailCta: 'Conectar por email', servicesKicker: '/ Cómo aporto',
+    servicesIntro: 'Convierto necesidades de negocio en sistemas que pueden medirse, mantenerse y evolucionar.',
+    practiceLabel: 'En la práctica',
     services: [
-      { number: '01', title: 'Arquitectura Full-Stack', copy: 'Interfaces claras, APIs sólidas y decisiones técnicas que aguantan cuando el producto crece.' },
-      { number: '02', title: 'Automatización & IA', copy: 'Procesos repetitivos convertidos en flujos medibles, rápidos y conectados con la operación real.' },
-      { number: '03', title: 'Cloud & datos', copy: 'Integraciones, documentación, seguridad y datos preparados para que el equipo pueda avanzar.' },
+      { number: '01', title: 'Arquitectura Full-Stack', copy: 'Conecto interfaces, APIs, datos y despliegue para construir productos que funcionen hoy y puedan crecer mañana.', flow: ['Interfaz', 'API', 'Datos', 'Cloud'], tools: ['Angular', 'JavaScript', 'APIs REST', 'Python', 'SQL Server'], microcopy: 'De la experiencia del usuario a la operación real.', accent: 'violet', visualType: 'architecture', practicalCopy: 'Diseño productos completos, desde la interfaz hasta los procesos que los mantienen funcionando en producción.' },
+      { number: '02', title: 'Automatización & IA', copy: 'Transformo procesos manuales y documentación compleja en flujos medibles mediante reglas, automatización, OCR e IA aplicada.', flow: ['Entrada', 'Reglas', 'Procesamiento', 'Resultado'], tools: ['Python', 'FastAPI', 'Flask', 'Pandas', 'OCR', 'IA privada'], microcopy: 'Menos fricción. Más velocidad. Decisiones más claras.', accent: 'lime', visualType: 'automation', practicalCopy: 'Convierto tareas repetitivas y documentación compleja en procesos más rápidos, trazables y medibles.' },
+      { number: '03', title: 'Cloud & datos', copy: 'Diseño integraciones y estructuras de datos seguras, trazables y preparadas para operar con grandes volúmenes.', flow: ['Documentos', 'APIs', 'Seguridad', 'Trazabilidad'], tools: ['Azure', 'Microsoft Graph', 'OneDrive', 'PostgreSQL', 'SQL Server'], microcopy: 'Datos conectados para que el equipo pueda avanzar.', accent: 'blue', visualType: 'cloud', practicalCopy: 'Conecto sistemas, documentos y datos para que puedan operar con seguridad y crecer sin perder control.' },
     ],
     casesKicker: '/ 02 — Casos seleccionados', casesIntro: 'Experiencia real, contada desde el problema hasta el impacto.',
     cases: [
@@ -88,10 +103,12 @@ export const copy: Record<Language, SiteCopy> = {
     profileKicker: '/ 01 — Profile', profileTitle: 'Technology works better when it understands people.',
     profileParagraphs: ['I am a systems engineer and Full-Stack Developer. I move between frontend, backend and business to turn real needs into software that can be maintained, measured and grown.', 'I currently build solutions with artificial intelligence while studying a Master’s in Big Data & Business Analytics. My approach combines technical judgment, direct communication and an obsession with removing friction.'],
     emailCta: 'Connect by email', servicesKicker: '/ How I contribute',
+    servicesIntro: 'I turn business needs into systems that can be measured, maintained and evolved.',
+    practiceLabel: 'In practice',
     services: [
-      { number: '01', title: 'Full-Stack architecture', copy: 'Clear interfaces, resilient APIs and technical decisions that hold up as the product grows.' },
-      { number: '02', title: 'Automation & AI', copy: 'Repetitive processes turned into measurable, fast flows connected to real operations.' },
-      { number: '03', title: 'Cloud & data', copy: 'Integrations, documentation, security and data prepared so teams can keep moving.' },
+      { number: '01', title: 'Full-Stack architecture', copy: 'I connect interfaces, APIs, data and deployment to build products that work today and can grow tomorrow.', flow: ['Interface', 'API', 'Data', 'Cloud'], tools: ['Angular', 'JavaScript', 'REST APIs', 'Python', 'SQL Server'], microcopy: 'From the user experience to real-world operations.', accent: 'violet', visualType: 'architecture', practicalCopy: 'I design complete products, from the interface to the processes that keep them running in production.' },
+      { number: '02', title: 'Automation & AI', copy: 'I turn manual processes and complex documentation into measurable workflows using rules, automation, OCR and applied AI.', flow: ['Input', 'Rules', 'Processing', 'Outcome'], tools: ['Python', 'FastAPI', 'Flask', 'Pandas', 'OCR', 'Private AI'], microcopy: 'Less friction. More speed. Clearer decisions.', accent: 'lime', visualType: 'automation', practicalCopy: 'I turn repetitive tasks and complex documentation into faster, traceable and measurable processes.' },
+      { number: '03', title: 'Cloud & data', copy: 'I design secure, traceable data structures and integrations prepared to operate at scale.', flow: ['Documents', 'APIs', 'Security', 'Traceability'], tools: ['Azure', 'Microsoft Graph', 'OneDrive', 'PostgreSQL', 'SQL Server'], microcopy: 'Connected data that helps teams move forward.', accent: 'blue', visualType: 'cloud', practicalCopy: 'I connect systems, documents and data so they can operate securely and scale without losing control.' },
     ],
     casesKicker: '/ 02 — Selected cases', casesIntro: 'Real experience, told from the problem to the impact.',
     cases: [

@@ -33,6 +33,12 @@ for (const route of routes) {
     assert.ok(html.includes(`href="${basePath}${path}" hrefLang="${language}"`), `${route.path}: wrong language switch`);
   }
   if (route.home) {
+    const capabilityIntro = route.language === 'es'
+      ? 'Convierto necesidades de negocio en sistemas que pueden medirse, mantenerse y evolucionar.'
+      : 'I turn business needs into systems that can be measured, maintained and evolved.';
+    assert.ok(html.includes(capabilityIntro), `${route.path}: missing capabilities introduction`);
+    assert.equal([...html.matchAll(/class="capability-card /g)].length, 3, 'Keep exactly three capabilities');
+    assert.equal([...html.matchAll(/class="capability-node"/g)].length, 12, 'Every capability needs a four-step flow');
     assert.equal([...html.matchAll(/class="project-card"/g)].length, 4, 'Keep exactly four project cards');
     assert.equal([...html.matchAll(/class="project-case-link"/g)].length, 4, 'All four cases must have links');
     for (const paths of Object.values(casePaths)) {
