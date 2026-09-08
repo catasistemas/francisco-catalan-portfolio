@@ -8,6 +8,7 @@ import ProjectVisual from './project-visual';
 import './projects.css';
 
 const symbols = [CreditCard, GitBranch, FileText, Workflow];
+const casePages = { '02': 'collections', '03': 'documents' } as const;
 
 function ProjectCard({ item, language, index }: { item: SiteCopy['cases'][number]; language: Language; index: number }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -58,6 +59,7 @@ function ProjectCard({ item, language, index }: { item: SiteCopy['cases'][number
   }
 
   const Symbol = symbols[index];
+  const casePage = casePages[item.index as keyof typeof casePages];
   return (
     <div ref={hostRef} className={`project-card-wrap project-tone-${item.tone}`} onPointerMove={movePointer} onPointerLeave={resetMotion} onPointerCancel={resetMotion}>
       <article className="project-card" aria-labelledby={`project-title-${item.index}`}>
@@ -70,7 +72,7 @@ function ProjectCard({ item, language, index }: { item: SiteCopy['cases'][number
             <div><span className="project-label">{item.resultLabel}</span><strong>{item.result}</strong></div>
             <div><span className="project-label">{item.stackLabel}</span><span>{item.tools}</span></div>
           </div>
-          {item.index === '02' && <a className="project-case-link" href={pageHref('collections', language)}>
+          {casePage && <a className="project-case-link" href={pageHref(casePage, language)}>
             {language === 'es' ? 'Ver caso completo' : 'Read the full case study'} <ArrowRight size={18} aria-hidden="true" />
           </a>}
         </div>

@@ -9,7 +9,14 @@ const prefix = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '');
 const browser = await chromium.launch({ headless: true, channel: process.env.PLAYWRIGHT_CHANNEL || undefined });
 const screenshots = 'outputs/projects';
 mkdirSync(screenshots, { recursive: true });
-const pages = { es: '/', en: '/en/', caseEs: '/casos/distribucion-carteras/', caseEn: '/en/cases/collections-allocation/' };
+const pages = {
+  es: '/',
+  en: '/en/',
+  cases: [
+    { es: '/casos/distribucion-carteras/', en: '/en/cases/collections-allocation/', className: 'case-theme-lime' },
+    { es: '/casos/biblioteca-trazable/', en: '/en/cases/traceable-document-library/', className: 'case-theme-blue' },
+  ],
+};
 const errors = [];
 
 async function visit(page, path) {
@@ -26,39 +33,46 @@ try {
   for (const [language, path] of [['es', pages.es], ['en', pages.en]]) {
     await visit(page, path);
     assert.equal(await page.locator('.project-card').count(), 4);
-    const target = language === 'es' ? pages.caseEs : pages.caseEn;
-    assert.equal(await page.locator('.project-case-link').getAttribute('href'), `${prefix}${target}`);
+    assert.equal(await page.locator('.project-case-link').count(), 2);
+    for (const [index, casePage] of pages.cases.entries()) {
+      assert.equal(await page.locator('.project-case-link').nth(index).getAttribute('href'), `${prefix}${casePage[language]}`);
+    }
     await page.locator('#casos').scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${screenshots}/cards-${language}-desktop.png` });
-    await page.locator('.project-case-link').click();
-    await page.waitForURL(`${origin}${prefix}${target}`);
-    assert.equal(await page.locator('main').getAttribute('lang'), language);
-    assert.equal(await page.locator('h1').count(), 1);
-    assert.equal(await page.locator('.case-chapter').count(), 4);
-    await page.reload();
-    assert.equal(await page.locator('.case-chapter').count(), 4);
-    const caseText = await page.locator('.case-body').innerText();
-    assert.doesNotMatch(caseText, /5[.,]000[.,]000|5000000|cinco millones|five million/i);
-    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `https://catasistemas.com${prefix}${target}`);
-    await page.screenshot({ path: `${screenshots}/case-${language}-desktop.png`, fullPage: true });
-    await page.getByRole('link', { name: language === 'es' ? 'English (United States)' : 'Español', exact: true }).click();
-    await page.waitForURL(`${origin}${prefix}${language === 'es' ? pages.caseEn : pages.caseEs}`);
+    for (const [index, casePage] of pages.cases.entries()) {
+      await visit(page, path);
+      await page.locator('.project-case-link').nth(index).click();
+      const target = casePage[language];
+      await page.waitForURL(`${origin}${prefix}${target}`);
+      assert.equal(await page.locator('main').getAttribute('lang'), language);
+      assert.equal(await page.locator('h1').count(), 1);
+      assert.equal(await page.locator('.case-chapter').count(), 4);
+      if (index === 1) assert.ok(await page.locator('main').evaluate((main, className) => main.classList.contains(className), casePage.className));
+      await page.reload();
+      assert.equal(await page.locator('.case-chapter').count(), 4);
+      const caseText = await page.locator('.case-body').innerText();
+      assert.doesNotMatch(caseText, /5[.,]000[.,]000|5000000|cinco millones|five million|\bRUT\b|vulnerabil/i);
+      assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `https://catasistemas.com${prefix}${target}`);
+      await page.screenshot({ path: `${screenshots}/case-${index + 2}-${language}-desktop.png`, fullPage: true });
+      await page.getByRole('link', { name: language === 'es' ? 'English (United States)' : 'Español', exact: true }).click();
+      await page.waitForURL(`${origin}${prefix}${casePage[language === 'es' ? 'en' : 'es']}`);
+    }
   }
-  console.log('PASS: four cards, both case links, direct reloads, localized case switches, metadata and content.');
+  console.log('PASS: four cards, two case links, four detail routes, direct reloads, language switches, metadata and safe content.');
 
   // Actual Tab/Enter navigation, rather than programmatically focusing the link.
   await visit(page, pages.es);
   let reached = false;
   for (let count = 0; count < 30; count++) {
     await page.keyboard.press('Tab');
-    reached = await page.locator('.project-case-link').evaluate((link) => document.activeElement === link);
+    reached = await page.locator('.project-case-link').nth(1).evaluate((link) => document.activeElement === link);
     if (reached) break;
   }
   assert.ok(reached, 'Case link must be reachable with Tab');
-  const outline = await page.locator('.project-case-link').evaluate((link) => getComputedStyle(link).outlineWidth);
+  const outline = await page.locator('.project-case-link').nth(1).evaluate((link) => getComputedStyle(link).outlineWidth);
   assert.ok(parseFloat(outline) >= 2, 'Visible keyboard focus');
   await page.keyboard.press('Enter');
-  await page.waitForURL(`${origin}${prefix}${pages.caseEs}`);
+  await page.waitForURL(`${origin}${prefix}${pages.cases[1].es}`);
   await page.getByRole('link', { name: 'Volver a los proyectos', exact: true }).click();
   await page.waitForURL(`${origin}${prefix}/#casos`);
   console.log('PASS: Tab, visible focus, Enter, return to projects.');
@@ -83,27 +97,28 @@ try {
   phone.on('pageerror', (error) => errors.push(error.message));
   for (const width of [320, 390, 768]) {
     await phone.setViewportSize({ width, height: 900 });
-    for (const path of [pages.es, pages.en, pages.caseEs, pages.caseEn]) {
+    for (const path of [pages.es, pages.en, ...pages.cases.flatMap((casePage) => [casePage.es, casePage.en])]) {
       await visit(phone, path);
       assert.ok(await phone.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `Overflow at ${width}px: ${path}`);
       if (path === pages.es || path === pages.en) {
         const cardBoxes = await phone.locator('.project-card').evaluateAll((cards) => cards.map((card) => ({ x: card.getBoundingClientRect().x, width: card.getBoundingClientRect().width })));
         if (width <= 390) assert.equal(cardBoxes[0].x, cardBoxes[1].x, 'Single-column cards on phones');
-        const link = phone.locator('.project-case-link');
-        assert.ok((await link.boundingBox()).height >= 44, 'Touch target at least 44px');
+        for (const link of await phone.locator('.project-case-link').all()) {
+          assert.ok((await link.boundingBox()).height >= 44, 'Touch target at least 44px');
+        }
       }
     }
   }
   await phone.setViewportSize({ width: 390, height: 844 });
   await visit(phone, pages.es);
-  await phone.locator('.project-card-wrap').nth(1).scrollIntoViewIfNeeded();
+  await phone.locator('.project-card-wrap').nth(2).scrollIntoViewIfNeeded();
   await phone.screenshot({ path: `${screenshots}/cards-mobile.png` });
   assert.equal(await phone.locator('.visual-float').first().evaluate((node) => getComputedStyle(node).animationName), 'none');
-  await phone.locator('.project-case-link').tap();
-  await phone.waitForURL(`${origin}${prefix}${pages.caseEs}`);
+  await phone.locator('.project-case-link').nth(1).tap();
+  await phone.waitForURL(`${origin}${prefix}${pages.cases[1].es}`);
   await phone.getByRole('link', { name: 'English (United States)', exact: true }).tap();
-  await phone.waitForURL(`${origin}${prefix}${pages.caseEn}`);
-  await phone.screenshot({ path: `${screenshots}/case-mobile.png`, fullPage: true });
+  await phone.waitForURL(`${origin}${prefix}${pages.cases[1].en}`);
+  await phone.screenshot({ path: `${screenshots}/case-03-mobile.png`, fullPage: true });
   console.log('PASS: 320/390/768px, no horizontal overflow, touch target, tap navigation, no touch tilt.');
   assert.deepEqual(errors, [], 'No browser errors or failed desktop resources');
   console.log('All project UI checks passed.');

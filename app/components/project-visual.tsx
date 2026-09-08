@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, Check, Cloud, Cpu, FileText, GitBranch, Layers3, ShieldCheck, Users, Workflow } from 'lucide-react';
+import { ArrowUpRight, Building2, Check, Cloud, Cpu, FileSearch, FileText, GitBranch, Layers3, MoonStar, ShieldCheck, Users, Workflow } from 'lucide-react';
 
 // Decorative, original abstractions. No screenshots, account numbers or business data.
 export default function ProjectVisual({ variant }: { variant: string }) {
@@ -23,10 +23,12 @@ export default function ProjectVisual({ variant }: { variant: string }) {
           <span className="visual-dot dot-two" />
         </>}
         {variant === '03' && <>
-          <svg className="visual-connections" viewBox="0 0 320 200"><path d="M160 50V116H82M160 116H240" /></svg>
+          <svg className="visual-connections" viewBox="0 0 320 200"><path d="M160 45V116H67M160 116H251M160 116V177" /></svg>
           <div className="cloud-object"><Cloud /></div>
           <div className="document-object document-rear"><FileText /><i /><i /></div>
           <div className="document-object document-front"><FileText /><i /><i /><span><Check /></span></div>
+          <div className="visual-token token-search"><FileSearch /></div>
+          <div className="visual-token token-batch"><MoonStar /></div>
           <span className="visual-dot dot-one" />
         </>}
         {variant === '04' && <>

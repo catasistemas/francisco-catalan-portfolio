@@ -13,7 +13,7 @@ export default function CollectionsCase({ language }: { language: Language }) {
   const t = collectionsCase[language];
   const sections = [{ id: 'context', title: t.context.title }, { id: 'responsibility', title: t.responsibility.title }, { id: 'solution', title: t.solution.title }, { id: 'impact', title: t.impact.title }];
   return (
-    <main className="site-shell case-study" lang={language}>
+    <main className="site-shell case-study case-theme-lime" lang={language}>
       <DocumentLanguage language={language} />
       <div className="noise" aria-hidden="true" />
       <SiteHeader language={language} page="collections" />

@@ -8,6 +8,10 @@ export const routes = {
     es: '/casos/distribucion-carteras/',
     en: '/en/cases/collections-allocation/',
   },
+  documents: {
+    es: '/casos/biblioteca-trazable/',
+    en: '/en/cases/traceable-document-library/',
+  },
 } as const;
 
 export type PageKey = keyof typeof routes;
