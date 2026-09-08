@@ -64,7 +64,7 @@ try {
     assert.equal(await page.locator('.capability-card.is-active .capability-details').getAttribute('aria-hidden'), 'false');
     await page.waitForTimeout(450);
     assert.ok(Math.abs((await lab.boundingBox()).height - initialHeight) <= 1, 'Capability switching must not shift layout');
-    await lab.screenshot({ path: `${screenshots}/capabilities-${language}-desktop.png` });
+    await page.locator('.services-section').screenshot({ path: `${screenshots}/capabilities-${language}-desktop.png` });
     assert.equal(await page.locator('.project-card').count(), 4);
     assert.equal(await page.locator('.project-case-link').count(), 4);
     for (const [index, casePage] of pages.cases.entries()) {
@@ -162,7 +162,7 @@ try {
   assert.equal(await phone.locator('.capability-trigger').nth(1).getAttribute('aria-pressed'), 'true');
   assert.equal(await phone.locator('.capabilities-practice p').innerText(), practicalCopy.es[1]);
   assert.ok((await phone.locator('.capability-trigger').nth(1).boundingBox()).height >= 44, 'Capability touch target at least 44px');
-  await phone.locator('.capabilities-lab').screenshot({ path: `${screenshots}/capabilities-mobile.png` });
+  await phone.locator('.services-section').screenshot({ path: `${screenshots}/capabilities-mobile.png` });
   await phone.locator('.project-card-wrap').nth(3).scrollIntoViewIfNeeded();
   await phone.screenshot({ path: `${screenshots}/cards-mobile.png` });
   assert.equal(await phone.locator('.project-card-wrap').nth(3).evaluate((node) => node.style.getPropertyValue('--tilt-y')), '', 'Touch must not set pointer tilt');
