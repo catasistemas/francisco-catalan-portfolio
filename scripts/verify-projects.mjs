@@ -46,6 +46,17 @@ try {
   page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
   for (const [language, path] of [['es', pages.es], ['en', pages.en]]) {
     await visit(page, path);
+    const trajectoryHeading = page.locator('.trajectory-heading h2');
+    const trajectoryAside = page.locator('.trajectory-heading .trajectory-aside');
+    assert.equal(await trajectoryHeading.count(), 1, 'One trajectory heading');
+    assert.equal(await trajectoryAside.count(), 1, 'One trajectory summary');
+    assert.equal(await page.locator('.trajectory h2 .trajectory-aside').count(), 0, 'Trajectory summary must not be nested inside its heading');
+    await page.locator('.trajectory').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(850);
+    const [headingBox, asideBox] = await Promise.all([trajectoryHeading.boundingBox(), trajectoryAside.boundingBox()]);
+    assert.ok(asideBox.y >= headingBox.y + headingBox.height + 20, 'Trajectory summary must not overlap its heading');
+    assert.equal(await trajectoryAside.evaluate((node) => getComputedStyle(node).letterSpacing), 'normal');
+    await page.locator('.trajectory').screenshot({ path: `${screenshots}/trajectory-${language}-desktop.png` });
     const capabilities = page.locator('.capability-card');
     const triggers = page.locator('.capability-trigger');
     const lab = page.locator('.capabilities-lab');
@@ -147,6 +158,9 @@ try {
       await visit(phone, path);
       assert.ok(await phone.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), `Overflow at ${width}px: ${path}`);
       if (path === pages.es || path === pages.en) {
+        const headingBox = await phone.locator('.trajectory-heading h2').boundingBox();
+        const asideBox = await phone.locator('.trajectory-heading .trajectory-aside').boundingBox();
+        assert.ok(asideBox.y >= headingBox.y + headingBox.height + 16, `Trajectory summary overlap at ${width}px: ${path}`);
         const cardBoxes = await phone.locator('.project-card').evaluateAll((cards) => cards.map((card) => ({ x: card.getBoundingClientRect().x, width: card.getBoundingClientRect().width })));
         if (width <= 390) assert.equal(cardBoxes[0].x, cardBoxes[1].x, 'Single-column cards on phones');
         for (const link of await phone.locator('.project-case-link').all()) {
@@ -162,7 +176,11 @@ try {
   assert.equal(await phone.locator('.capability-trigger').nth(1).getAttribute('aria-pressed'), 'true');
   assert.equal(await phone.locator('.capabilities-practice p').innerText(), practicalCopy.es[1]);
   assert.ok((await phone.locator('.capability-trigger').nth(1).boundingBox()).height >= 44, 'Capability touch target at least 44px');
+  await phone.waitForTimeout(850);
   await phone.locator('.services-section').screenshot({ path: `${screenshots}/capabilities-mobile.png` });
+  await phone.locator('.trajectory').scrollIntoViewIfNeeded();
+  await phone.waitForTimeout(850);
+  await phone.locator('.trajectory').screenshot({ path: `${screenshots}/trajectory-mobile.png` });
   await phone.locator('.project-card-wrap').nth(3).scrollIntoViewIfNeeded();
   await phone.screenshot({ path: `${screenshots}/cards-mobile.png` });
   assert.equal(await phone.locator('.project-card-wrap').nth(3).evaluate((node) => node.style.getPropertyValue('--tilt-y')), '', 'Touch must not set pointer tilt');
