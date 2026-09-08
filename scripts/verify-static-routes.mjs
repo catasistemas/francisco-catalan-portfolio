@@ -8,6 +8,7 @@ const casePaths = {
   credit: { es: '/casos/credito-comercial/', en: '/en/cases/commercial-credit/' },
   collections: { es: '/casos/distribucion-carteras/', en: '/en/cases/collections-allocation/' },
   documents: { es: '/casos/biblioteca-trazable/', en: '/en/cases/traceable-document-library/' },
+  people: { es: '/casos/plataforma-rrhh-ia/', en: '/en/cases/people-operations-ai-platform/' },
 };
 const routes = [
   { path: '/', file: 'index.html', language: 'es', content: 'Disponible para nuevas oportunidades', home: true },
@@ -18,6 +19,8 @@ const routes = [
   { path: casePaths.collections.en, file: 'en/cases/collections-allocation/index.html', language: 'en', page: 'collections', content: 'Collections portfolio allocation and monitoring platform', sections: ['context', 'responsibility', 'solution', 'impact'] },
   { path: casePaths.documents.es, file: 'casos/biblioteca-trazable/index.html', language: 'es', page: 'documents', content: 'Biblioteca documental trazable en la nube', sections: ['context', 'solution', 'technical', 'impact'] },
   { path: casePaths.documents.en, file: 'en/cases/traceable-document-library/index.html', language: 'en', page: 'documents', content: 'A traceable cloud document library', sections: ['context', 'solution', 'technical', 'impact'] },
+  { path: casePaths.people.es, file: 'casos/plataforma-rrhh-ia/index.html', language: 'es', page: 'people', content: 'Una plataforma interna para operaciones de personas', sections: ['context', 'access', 'features', 'intelligence', 'technical', 'evolution', 'impact'] },
+  { path: casePaths.people.en, file: 'en/cases/people-operations-ai-platform/index.html', language: 'en', page: 'people', content: 'An internal platform for people operations', sections: ['context', 'access', 'features', 'intelligence', 'technical', 'evolution', 'impact'] },
 ];
 
 for (const route of routes) {
@@ -31,7 +34,7 @@ for (const route of routes) {
   }
   if (route.home) {
     assert.equal([...html.matchAll(/class="project-card"/g)].length, 4, 'Keep exactly four project cards');
-    assert.equal([...html.matchAll(/class="project-case-link"/g)].length, 3, 'Cases 01, 02 and 03 must have links');
+    assert.equal([...html.matchAll(/class="project-case-link"/g)].length, 4, 'All four cases must have links');
     for (const paths of Object.values(casePaths)) {
       assert.ok(html.includes(`href="${basePath}${paths[route.language]}"`), 'Missing localized case link');
     }
@@ -39,6 +42,10 @@ for (const route of routes) {
     assert.ok(html.includes(`rel="canonical" href="https://catasistemas.com${basePath}${route.path}"`), 'Wrong case canonical');
     for (const section of route.sections) {
       assert.ok(html.includes(`id="${section}"`), `Missing case section: ${section}`);
+    }
+    if (route.page === 'people') {
+      assert.doesNotMatch(html, /Carmon|Factorial|INSS|endpoint|nombre de tabla|table name/i, 'Confidential case details must stay anonymous');
+      assert.ok(html.includes(route.language === 'es' ? 'no tomaba decisiones laborales de forma autónoma' : 'did not make employment decisions autonomously'), 'Missing human-oversight statement');
     }
     assert.ok(html.includes(`href="${basePath}${route.language === 'es' ? '/' : '/en/'}#casos"`), 'Missing return link');
   }

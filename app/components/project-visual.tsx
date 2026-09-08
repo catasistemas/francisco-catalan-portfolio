@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, Check, Cloud, Cpu, FileSearch, FileText, Gift, GitBranch, Landmark, Layers3, MoonStar, ShieldCheck, Users, Workflow } from 'lucide-react';
+import { ArrowUpRight, BrainCircuit, Building2, Check, Cloud, FileScan, FileSearch, FileText, Gift, GitBranch, Landmark, Layers3, MoonStar, ShieldCheck, Users } from 'lucide-react';
 
 // Decorative, original abstractions. No screenshots, account numbers or business data.
 export default function ProjectVisual({ variant }: { variant: string }) {
@@ -35,10 +35,10 @@ export default function ProjectVisual({ variant }: { variant: string }) {
           <span className="visual-dot dot-one" />
         </>}
         {variant === '04' && <>
-          <svg className="visual-connections" viewBox="0 0 320 200"><path d="M74 116H116V86H205V116H249M160 124V159" /></svg>
+          <svg className="visual-connections" viewBox="0 0 320 200"><path d="M74 116H116V86H205V116H249M160 124V159" /><path className="ai-signal" d="M108 59C132 35 187 35 212 59" /></svg>
           <div className="process-block process-left"><Users /></div>
-          <div className="process-block process-center"><Cpu /><span className="chip-pin pin-left" /><span className="chip-pin pin-right" /></div>
-          <div className="process-block process-right"><Workflow /></div>
+          <div className="process-block process-center"><BrainCircuit /><span className="chip-pin pin-left" /><span className="chip-pin pin-right" /></div>
+          <div className="process-block process-right"><FileScan /></div>
           <div className="visual-token token-check"><Check /></div>
           <span className="visual-dot dot-one" />
         </>}

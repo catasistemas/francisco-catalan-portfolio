@@ -1,6 +1,7 @@
 .case-study { --case-accent: var(--lime); overflow: clip; }
 .case-study.case-theme-violet { --case-accent: var(--violet); }
 .case-study.case-theme-blue { --case-accent: var(--blue); }
+.case-study.case-theme-orange { --case-accent: var(--orange); }
 .case-study .section-kicker { color: var(--case-accent); }
 .case-study a:focus-visible { outline: 2px solid var(--case-accent); outline-offset: 5px; border-radius: 3px; }
 .case-back-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 36px; color: #b9b5ae; font-size: 12px; }

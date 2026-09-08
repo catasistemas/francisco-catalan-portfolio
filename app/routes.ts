@@ -16,6 +16,10 @@ export const routes = {
     es: '/casos/biblioteca-trazable/',
     en: '/en/cases/traceable-document-library/',
   },
+  people: {
+    es: '/casos/plataforma-rrhh-ia/',
+    en: '/en/cases/people-operations-ai-platform/',
+  },
 } as const;
 
 export type PageKey = keyof typeof routes;

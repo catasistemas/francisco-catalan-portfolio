@@ -8,7 +8,7 @@ import ProjectVisual from './project-visual';
 import './projects.css';
 
 const symbols = [CreditCard, GitBranch, FileText, Workflow];
-const casePages = { '01': 'credit', '02': 'collections', '03': 'documents' } as const;
+const casePages = { '01': 'credit', '02': 'collections', '03': 'documents', '04': 'people' } as const;
 
 function ProjectCard({ item, language, index }: { item: SiteCopy['cases'][number]; language: Language; index: number }) {
   const hostRef = useRef<HTMLDivElement>(null);
