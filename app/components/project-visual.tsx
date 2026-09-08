@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, Check, Cloud, Cpu, FileSearch, FileText, GitBranch, Layers3, MoonStar, ShieldCheck, Users, Workflow } from 'lucide-react';
+import { ArrowUpRight, Building2, Check, Cloud, Cpu, FileSearch, FileText, Gift, GitBranch, Landmark, Layers3, MoonStar, ShieldCheck, Users, Workflow } from 'lucide-react';
 
 // Decorative, original abstractions. No screenshots, account numbers or business data.
 export default function ProjectVisual({ variant }: { variant: string }) {
@@ -8,9 +8,12 @@ export default function ProjectVisual({ variant }: { variant: string }) {
       <div className="visual-ground" />
       <div className="visual-float">
         {variant === '01' && <>
+          <svg className="visual-connections" viewBox="0 0 320 200"><path d="M83 106H117M214 106H257M161 43V72" /></svg>
           <div className="credit-object credit-rear"><span className="credit-stripe" /></div>
           <div className="credit-object credit-front"><span className="credit-chip" /><ArrowUpRight /><span className="credit-lines"><i /><i /><i /></span><span className="credit-circles" /></div>
           <div className="visual-token token-credit"><ShieldCheck /></div>
+          <div className="visual-token token-payment"><Landmark /></div>
+          <div className="visual-token token-benefit"><Gift /></div>
           <span className="visual-dot dot-one" /><span className="visual-dot dot-two" />
         </>}
         {variant === '02' && <>

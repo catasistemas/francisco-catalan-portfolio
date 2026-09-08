@@ -5,12 +5,15 @@ import { resolve } from 'node:path';
 const output = resolve('dist/client');
 const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '');
 const casePaths = {
+  credit: { es: '/casos/credito-comercial/', en: '/en/cases/commercial-credit/' },
   collections: { es: '/casos/distribucion-carteras/', en: '/en/cases/collections-allocation/' },
   documents: { es: '/casos/biblioteca-trazable/', en: '/en/cases/traceable-document-library/' },
 };
 const routes = [
   { path: '/', file: 'index.html', language: 'es', content: 'Disponible para nuevas oportunidades', home: true },
   { path: '/en/', file: 'en/index.html', language: 'en', content: 'Available for new opportunities', home: true },
+  { path: casePaths.credit.es, file: 'casos/credito-comercial/index.html', language: 'es', page: 'credit', content: 'Una plataforma web para conectar clientes, pagos y servicios financieros.', sections: ['context', 'experience', 'integrations', 'backoffice', 'technical', 'impact'] },
+  { path: casePaths.credit.en, file: 'en/cases/commercial-credit/index.html', language: 'en', page: 'credit', content: 'A web platform connecting customers, payments and financial services.', sections: ['context', 'experience', 'integrations', 'backoffice', 'technical', 'impact'] },
   { path: casePaths.collections.es, file: 'casos/distribucion-carteras/index.html', language: 'es', page: 'collections', content: 'Plataforma de distribución y seguimiento de carteras de cobranza', sections: ['context', 'responsibility', 'solution', 'impact'] },
   { path: casePaths.collections.en, file: 'en/cases/collections-allocation/index.html', language: 'en', page: 'collections', content: 'Collections portfolio allocation and monitoring platform', sections: ['context', 'responsibility', 'solution', 'impact'] },
   { path: casePaths.documents.es, file: 'casos/biblioteca-trazable/index.html', language: 'es', page: 'documents', content: 'Biblioteca documental trazable en la nube', sections: ['context', 'solution', 'technical', 'impact'] },
@@ -28,7 +31,7 @@ for (const route of routes) {
   }
   if (route.home) {
     assert.equal([...html.matchAll(/class="project-card"/g)].length, 4, 'Keep exactly four project cards');
-    assert.equal([...html.matchAll(/class="project-case-link"/g)].length, 2, 'Cases 02 and 03 must have links');
+    assert.equal([...html.matchAll(/class="project-case-link"/g)].length, 3, 'Cases 01, 02 and 03 must have links');
     for (const paths of Object.values(casePaths)) {
       assert.ok(html.includes(`href="${basePath}${paths[route.language]}"`), 'Missing localized case link');
     }
@@ -41,11 +44,15 @@ for (const route of routes) {
   }
 
   for (const [, rawUrl] of html.matchAll(/(?:src|href)="(\/[^"\s]*)"/g)) {
-    let url = rawUrl.split(/[?#]/)[0];
+    const url = rawUrl.split(/[?#]/)[0];
     if (url.startsWith('//')) continue;
-    if (basePath && url.startsWith(`${basePath}/`)) url = url.slice(basePath.length);
-    const file = url.endsWith('/') ? `${url}index.html` : url;
-    assert.ok(existsSync(resolve(output, `.${file}`)), `${route.path}: missing local asset or route ${url}`);
+    const paths = [url];
+    if (basePath && url.startsWith(`${basePath}/`)) paths.push(url.slice(basePath.length));
+    const found = paths.some((path) => {
+      const file = path.endsWith('/') ? `${path}index.html` : path;
+      return existsSync(resolve(output, `.${file}`));
+    });
+    assert.ok(found, `${route.path}: missing local asset or route ${url}`);
   }
   console.log(`Verified ${basePath}${route.path}: localized content, navigation, case routes and local assets`);
 }

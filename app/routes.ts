@@ -4,6 +4,10 @@ export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/,
 
 export const routes = {
   home: { es: '/', en: '/en/' },
+  credit: {
+    es: '/casos/credito-comercial/',
+    en: '/en/cases/commercial-credit/',
+  },
   collections: {
     es: '/casos/distribucion-carteras/',
     en: '/en/cases/collections-allocation/',
