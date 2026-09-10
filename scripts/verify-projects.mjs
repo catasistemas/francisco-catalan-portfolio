@@ -47,6 +47,20 @@ try {
   page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
   for (const [language, path] of [['es', pages.es], ['en', pages.en]]) {
     await visit(page, path);
+    assert.equal(await page.locator('link[rel="icon"][href="/favicon.svg"]').count(), 1, 'Stable SVG favicon');
+    assert.equal(await page.locator('link[rel="icon"][href="/favicon-48x48.png"]').count(), 1, '48px favicon fallback');
+    assert.equal(await page.locator('link[rel="icon"][href="/favicon-96x96.png"]').count(), 1, '96px favicon fallback');
+    assert.equal(await page.locator('link[rel="shortcut icon"][href="/favicon.ico"]').count(), 1, 'ICO favicon fallback');
+    assert.equal(await page.locator('link[rel="apple-touch-icon"][href="/apple-touch-icon.png"]').count(), 1, 'Apple touch icon');
+    const decodedIcons = await page.evaluate(async () => Promise.all([
+      ['/favicon-48x48.png', 48], ['/favicon-96x96.png', 96], ['/apple-touch-icon.png', 180], ['/favicon.ico', 48],
+    ].map(([src, expected]) => new Promise((resolve) => {
+      const icon = new Image();
+      icon.onload = () => resolve(icon.naturalWidth === expected && icon.naturalHeight === expected);
+      icon.onerror = () => resolve(false);
+      icon.src = src;
+    }))));
+    assert.ok(decodedIcons.every(Boolean), 'Every favicon format must decode at its declared size');
     const probe = page.locator('.scroll-probe');
     const probeLink = page.locator('.scroll-probe-link');
     assert.equal(await probe.count(), 1, 'One global scroll probe');

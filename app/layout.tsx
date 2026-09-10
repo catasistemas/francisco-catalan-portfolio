@@ -36,7 +36,15 @@ export const metadata: Metadata = {
   creator: 'Francisco Catalán',
   publisher: 'Francisco Catalán',
   robots: { index: true, follow: true },
-  icons: { icon: { url: '/favicon.svg?v=fc-1', type: 'image/svg+xml', sizes: 'any' } },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/favicon-48x48.png', type: 'image/png', sizes: '48x48' },
+      { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+    ],
+    shortcut: [{ url: '/favicon.ico', type: 'image/x-icon', sizes: '48x48' }],
+    apple: [{ url: '/apple-touch-icon.png', type: 'image/png', sizes: '180x180' }],
+  },
   openGraph: {
     title: 'Francisco Catalán — Full-Stack Developer',
     description:

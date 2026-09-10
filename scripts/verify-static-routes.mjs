@@ -23,6 +23,21 @@ const routes = [
   { path: casePaths.people.en, file: 'en/cases/people-operations-ai-platform/index.html', language: 'en', page: 'people', content: 'An internal platform for people operations', sections: ['context', 'access', 'features', 'intelligence', 'technical', 'evolution', 'impact'] },
 ];
 
+const pngSignature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+for (const [file, size] of [['favicon-48x48.png', 48], ['favicon-96x96.png', 96], ['apple-touch-icon.png', 180]]) {
+  const image = readFileSync(resolve('public', file));
+  assert.ok(image.subarray(0, 8).equals(pngSignature), `${file}: invalid PNG signature`);
+  assert.equal(image.readUInt32BE(16), size, `${file}: wrong width`);
+  assert.equal(image.readUInt32BE(20), size, `${file}: wrong height`);
+}
+const ico = readFileSync(resolve('public', 'favicon.ico'));
+assert.equal(ico.readUInt16LE(0), 0, 'favicon.ico: invalid reserved field');
+assert.equal(ico.readUInt16LE(2), 1, 'favicon.ico: invalid image type');
+assert.equal(ico.readUInt16LE(4), 1, 'favicon.ico: expected one image');
+assert.equal(ico.readUInt8(6), 48, 'favicon.ico: wrong width');
+assert.equal(ico.readUInt8(7), 48, 'favicon.ico: wrong height');
+assert.ok(ico.subarray(ico.readUInt32LE(18), ico.readUInt32LE(18) + 8).equals(pngSignature), 'favicon.ico: missing embedded PNG');
+
 for (const route of routes) {
   // Directory indexes are required for direct requests to slash-terminated URLs on Pages.
   const html = readFileSync(resolve(output, route.file), 'utf8');
@@ -33,6 +48,12 @@ for (const route of routes) {
     assert.ok(html.includes(`href="${basePath}${path}" hrefLang="${language}"`), `${route.path}: wrong language switch`);
   }
   if (route.home) {
+    assert.ok(html.includes('rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any"'), `${route.path}: missing stable SVG favicon`);
+    assert.ok(html.includes('href="/favicon-48x48.png" type="image/png" sizes="48x48"'), `${route.path}: missing 48px favicon`);
+    assert.ok(html.includes('href="/favicon-96x96.png" type="image/png" sizes="96x96"'), `${route.path}: missing 96px favicon`);
+    assert.ok(html.includes('rel="shortcut icon" href="/favicon.ico"'), `${route.path}: missing ICO fallback`);
+    assert.ok(html.includes('rel="apple-touch-icon" href="/apple-touch-icon.png"'), `${route.path}: missing Apple touch icon`);
+    assert.doesNotMatch(html, /favicon\.svg\?/, `${route.path}: favicon URL must remain stable`);
     const capabilityIntro = route.language === 'es'
       ? 'Convierto necesidades de negocio en sistemas que pueden medirse, mantenerse y evolucionar.'
       : 'I turn business needs into systems that can be measured, maintained and evolved.';
